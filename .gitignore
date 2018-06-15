@@ -1,0 +1,7 @@
+vendor
+composer.lock
+node_modules
+*.po~
+.env
+build/
+\.php_cs\.cache
