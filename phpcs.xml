@@ -9,6 +9,7 @@
 
     <file>.</file>
     <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/build/*</exclude-pattern>
     <exclude-pattern>*/node_modules/*</exclude-pattern>
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
@@ -26,7 +27,6 @@
     <rule ref="SlevomatCodingStandard.Commenting.ForbiddenAnnotations">
 		<properties>
 			<property name="forbiddenAnnotations" type="array" value="
-				@copyright,
 				@package,
 				@throws
 			"/>
