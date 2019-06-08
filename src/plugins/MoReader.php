@@ -109,19 +109,19 @@ class MoReader extends BasePlugin
      */
     public function readTranslations(): array
     {
-        $data = array();
+        $data = [];
         for ($counter = 0; $counter < $this->data->nbrOfStrings; $counter++) {
             $msgId  = null;
             $msgStr = null;
             try {
                 $msgId = $this->readStringFromTable($counter, $this->data->msgIdTable);
             } catch(Exception $e){
-                $msgId = array('');
+                $msgId = [''];
             }
             try {
                 $msgStr = $this->readStringFromTable($counter, $this->data->msgStrTable);
             } catch(Exception $e){
-                $msgStr = array();
+                $msgStr = [];
             }
             $this->processRecord($data, $msgId, $msgStr);
         }

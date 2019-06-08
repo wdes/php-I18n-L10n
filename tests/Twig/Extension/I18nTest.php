@@ -36,7 +36,7 @@ class I18nTest extends TestCase
         //$tmpDir = $dataDir."twig-templates".$S."tmp".$S;
 
         $moReader         = new MoReader(
-            array("localeDir" => $dataDir)
+            ["localeDir" => $dataDir]
         );
         $data             = $moReader->readFile($dataDir."abc.mo");
         Launcher::$plugin = $moReader;
@@ -44,10 +44,10 @@ class I18nTest extends TestCase
         $loader      = new \Twig_Loader_Filesystem();
         $memoryCache = new \Wdes\PIL\Twig\MemoryCache();
         $twig        = new TwigEnv(
-            $loader, array(
+            $loader, [
             'cache' => $memoryCache,//$tmpDir | false
             'debug' => true
-            )
+            ]
         );
 
         $twig->addExtension(new ExtensionI18n());
@@ -72,7 +72,7 @@ class I18nTest extends TestCase
             'echo \Wdes\PIL\Launcher::getPlugin()->gettext("Translate this");',
             $generatedCode
         );
-        $html = $template->render(array());
+        $html = $template->render([]);
         $this->assertEquals("Traduis ça", $html);
         $this->assertNotEmpty($html);
     }
@@ -98,7 +98,7 @@ class I18nTest extends TestCase
             '// l10n: And note',
             $generatedCode
         );
-        $html = $template->render(array());
+        $html = $template->render([]);
         $this->assertEquals("Traduis ça", $html);
         $this->assertNotEmpty($html);
     }
@@ -121,7 +121,7 @@ class I18nTest extends TestCase
             'echo \Wdes\PIL\Launcher::getPlugin()->pgettext("NayanCat", "Translate this");',
             $generatedCode
         );
-        $html = $template->render(array());
+        $html = $template->render([]);
         $this->assertEquals("Traduis ça", $html);
         $this->assertNotEmpty($html);
     }
@@ -145,7 +145,7 @@ class I18nTest extends TestCase
             ' array("%nbr%" => ($context["nbr"] ?? null), ));',
             $generatedCode
         );
-        $html = $template->render(array("nbr" => 5));
+        $html = $template->render(["nbr" => 5]);
         $this->assertEquals("One person", $html);
         $this->assertNotEmpty($html);
     }
@@ -174,7 +174,7 @@ class I18nTest extends TestCase
             '// l10n: Number of users',
             $generatedCode
         );
-        $html = $template->render(array("nbr" => 5));
+        $html = $template->render(["nbr" => 5]);
         $this->assertEquals("one user likes this.", $html);
         $this->assertNotEmpty($html);
     }
@@ -196,7 +196,7 @@ class I18nTest extends TestCase
             'echo \Wdes\PIL\Launcher::getPlugin()->ngettext("One person", "persons", abs(($context["a"] ?? null)));',
             $generatedCode
         );
-        $html = $template->render(array("nbr" => 5));
+        $html = $template->render(["nbr" => 5]);
         $this->assertEquals("One person", $html);
         $this->assertNotEmpty($html);
     }
@@ -220,7 +220,7 @@ class I18nTest extends TestCase
             ' ($context["a"] ?? null), "count", array())));',
             $generatedCode
         );
-        $html = $template->render(array("a" => array("1", "2")));
+        $html = $template->render(["a" => ["1", "2"]]);
         $this->assertEquals("One person", $html);
         $this->assertNotEmpty($html);
     }
@@ -246,7 +246,7 @@ class I18nTest extends TestCase
             ' $this->source, ($context["a"] ?? null), "count", array())), ));',
             $generatedCode
         );
-        $html = $template->render(array("a" => array("1", "2"), "nbrdogs" => 3));
+        $html = $template->render(["a" => ["1", "2"], "nbrdogs" => 3]);
         $this->assertEquals("One person", $html);
         $this->assertNotEmpty($html);
     }

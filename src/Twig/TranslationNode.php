@@ -37,7 +37,7 @@ class TranslationNode extends TransNode
         $lineno,
         $tag = null
     ) {
-        $nodes = array('body' => $body);
+        $nodes = ['body' => $body];
         if (null !== $context) {
             $nodes['context'] = $context;
         }
@@ -51,7 +51,7 @@ class TranslationNode extends TransNode
             $nodes['plural'] = $plural;
         }
 
-        Node::__construct($nodes, array(), $lineno, $tag);
+        Node::__construct($nodes, [], $lineno, $tag);
     }
 
     /**
@@ -81,7 +81,7 @@ class TranslationNode extends TransNode
         if ($this->hasNode('notes')) {
             $message = trim($this->getNode('notes')->getAttribute('data'));
             // line breaks are removed
-            $message = str_replace(array("\n", "\r"), ' ', $message);
+            $message = str_replace(["\n", "\r"], ' ', $message);
             $compiler->write("// l10n: {$message}\n");
         }
         if ($vars) {
@@ -89,7 +89,7 @@ class TranslationNode extends TransNode
             if ($this->hasNode('plural')) {
                 $compiler->raw(', ')->subcompile($pMessage)->raw(', abs(')->subcompile($this->hasNode('count') ? $this->getNode('count') : null)->raw(')');
             }
-            $compiler->raw('), array(');
+            $compiler->raw('), [');
             foreach ($vars as $var) {
                 $attrName = $var->getAttribute('name');
                 if ($attrName === 'count') {
@@ -102,7 +102,7 @@ class TranslationNode extends TransNode
                     $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var)->raw(', ');
                 }
             }
-            $compiler->raw("));\n");
+            $compiler->raw("]);\n");
         } else {
             $compiler->write('echo '.$function.'(');
             if ($this->hasNode('context')) {

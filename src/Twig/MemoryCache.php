@@ -16,7 +16,7 @@ class MemoryCache implements \Twig_CacheInterface
      *
      * @var array<string, string>
      */
-    private $memory = array();
+    private $memory = [];
 
     /**
      * Generate a cache key

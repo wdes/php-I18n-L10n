@@ -27,7 +27,7 @@ class MoReaderTest extends TestCase
     public function testInstance(): MoReader
     {
         $moReader = new MoReader(
-            array("localeDir" => self::$dir)
+            ["localeDir" => self::$dir]
         );
         $this->assertInstanceOf(MoReader::class, $moReader);
 
@@ -46,7 +46,7 @@ class MoReaderTest extends TestCase
     public function testException(): void
     {
         new MoReader(
-            array("localeDir" => self::$dir.str_shuffle("abcdefghijklmnopqrstuv"))
+            ["localeDir" => self::$dir.str_shuffle("abcdefghijklmnopqrstuv")]
         );
     }
 

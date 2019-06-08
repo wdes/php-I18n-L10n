@@ -23,9 +23,9 @@ class I18n extends I18nExtension
      */
     public function getFilters(): array
     {
-        return array(
+        return [
             new TwigFilter('trans'),
-        );
+        ];
     }
 
     /**
@@ -35,9 +35,9 @@ class I18n extends I18nExtension
      */
     public function getTokenParsers(): array
     {
-        return array(
+        return [
             new TokenParser()
-        );
+        ];
     }
 
 }
