@@ -23,10 +23,10 @@ abstract class BasePlugin
     /**
      * Get translation for a message id
      *
-     * @param mixed $msgId Message id
+     * @param string $msgId Message id
      * @return string
      */
-    abstract public function gettext($msgId): string;
+    abstract public function gettext(string $msgId): string;
 
     /**
      * Get translation for a message id
@@ -71,14 +71,14 @@ abstract class BasePlugin
     abstract public function npgettext($msgctxt, $msgId, $msgIdPlural, $number): string;
 
     /**
-     * Get translation
+     * Plural version of gettext
      *
-     * @param mixed $msgId       Message id
-     * @param mixed $msgIdPlural Plural message id
-     * @param mixed $number      Number
+     * @param string $msgId       Message id
+     * @param string $msgIdPlural Plural message id
+     * @param int    $number      Number
      * @return string
      */
-    abstract public function ngettext($msgId, $msgIdPlural, $number): string;
+    abstract public function ngettext(string $msgId, string $msgIdPlural, int $number);
 
     /**
      * Get translation
