@@ -32,4 +32,16 @@ class Launcher
         return Launcher::$plugin;
     }
 
+    /**
+     * Access gettext directly, not recommended
+     * Reserved to twig filter
+     *
+     * @param mixed $msgId Message id
+     * @return string
+     */
+    public static function gettext($msgId): string
+    {
+        return Launcher::$plugin->gettext($msgId);
+    }
+
 }

@@ -24,7 +24,9 @@ class I18n extends I18nExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('trans'),
+            new TwigFilter(
+                'trans', '\Wdes\PIL\Launcher::gettext'
+            ),
         ];
     }
 
