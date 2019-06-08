@@ -11,6 +11,12 @@
         "issues": "https://github.com/wdes/php-I18n-l10n/issues",
         "source": "https://github.com/wdes/php-I18n-l10n"
     },
+    "scripts": {
+        "phpcs": "phpcs --standard=phpcs.xml --no-cache --colors -p -n",
+        "phpcbf": "phpcbf --standard=phpcs.xml",
+        "phpstan": "phpstan analyse src tests --configuration=phpstan.neon --level=max",
+        "phpunit": "phpunit --configuration ./tests/phpunit.xml"
+    },
     "authors": [
         {
             "name": "William Desportes",

@@ -113,14 +113,6 @@ jobs:
         - CI_TYPE=phpcs
         - CI_COMPOSER=yes
       name: "PHPCS - PHP 7.3"
-    - stage: lint
-      language: php
-      php: "7.3"
-      env:
-        - CI_TYPE=lint
-        - CI_COMPOSER=yes
-      name: "LINT - PHP 7.3"
-      script: composer run phpcs
 
 cache:
   ccache: true
