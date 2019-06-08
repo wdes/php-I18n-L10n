@@ -250,10 +250,10 @@ class MoReader extends BasePlugin
     /**
      * Return string id or translation
      *
-     * @param mixed $msgId The message id
+     * @param string $msgId The message id
      * @return string
      */
-    public function idOrFind($msgId): string
+    public function idOrFind(string $msgId): string
     {
         if (array_key_exists($msgId, $this->data->translations)) {
             return $this->data->translations[$msgId];
@@ -265,10 +265,10 @@ class MoReader extends BasePlugin
     /**
      * Get translation for a message id
      *
-     * @param mixed $msgId Message id
+     * @param string $msgId Message id
      * @return string
      */
-    public function __($msgId): string
+    public function __(string $msgId): string
     {
         return self::gettext($msgId);
     }
@@ -287,14 +287,14 @@ class MoReader extends BasePlugin
     /**
      * Get translation
      *
-     * @param mixed $domain      Domain
-     * @param mixed $msgctxt     msgctxt
-     * @param mixed $msgId       Message id
-     * @param mixed $msgIdPlural Plural message id
-     * @param mixed $number      Number
+     * @param string $domain      Domain
+     * @param string $msgctxt     msgctxt
+     * @param string $msgId       Message id
+     * @param string $msgIdPlural Plural message id
+     * @param int    $number      Number
      * @return string
      */
-    public function dnpgettext($domain, $msgctxt, $msgId, $msgIdPlural, $number): string
+    public function dnpgettext(string $domain, string $msgctxt, string $msgId, string $msgIdPlural, int $number): string
     {
         return self::idOrFind($msgId);
     }
@@ -302,13 +302,13 @@ class MoReader extends BasePlugin
     /**
      * Get translation
      *
-     * @param mixed $domain      Domain
-     * @param mixed $msgId       Message id
-     * @param mixed $msgIdPlural Plural message id
-     * @param mixed $number      Number
+     * @param string $domain      Domain
+     * @param string $msgId       Message id
+     * @param string $msgIdPlural Plural message id
+     * @param int    $number      Number
      * @return string
      */
-    public function dngettext($domain, $msgId, $msgIdPlural, $number): string
+    public function dngettext(string $domain, string $msgId, string $msgIdPlural, int $number): string
     {
         return self::idOrFind($msgId);
     }
@@ -316,15 +316,19 @@ class MoReader extends BasePlugin
     /**
      * Get translation
      *
-     * @param mixed $msgctxt     msgctxt
-     * @param mixed $msgId       Message id
-     * @param mixed $msgIdPlural Plural message id
-     * @param mixed $number      Number
+     * @param string $msgctxt     msgctxt
+     * @param string $msgId       Message id
+     * @param string $msgIdPlural Plural message id
+     * @param int    $number      Number
      * @return string
      */
-    public function npgettext($msgctxt, $msgId, $msgIdPlural, $number): string
+    public function npgettext(string $msgctxt, string $msgId, string $msgIdPlural, int $number): string
     {
-        return self::idOrFind($msgId);
+        if ($number > 1) {
+            return self::idOrFind($msgIdPlural);
+        } else {
+            return self::idOrFind($msgId);
+        }
     }
 
     /**
@@ -347,12 +351,12 @@ class MoReader extends BasePlugin
     /**
      * Get translation
      *
-     * @param mixed $domain  Domain
-     * @param mixed $msgctxt msgctxt
-     * @param mixed $msgId   Message id
+     * @param string $domain  Domain
+     * @param string $msgctxt msgctxt
+     * @param string $msgId   Message id
      * @return string
      */
-    public function dpgettext($domain, $msgctxt, $msgId): string
+    public function dpgettext(string $domain, string $msgctxt, string $msgId): string
     {
         return self::idOrFind($msgId);
     }
@@ -360,11 +364,11 @@ class MoReader extends BasePlugin
     /**
      * Get translation
      *
-     * @param mixed $domain Domain
-     * @param mixed $msgId  Message id
+     * @param string $domain Domain
+     * @param string $msgId  Message id
      * @return string
      */
-    public function dgettext($domain, $msgId): string
+    public function dgettext(string $domain, string $msgId): string
     {
         return self::idOrFind($msgId);
     }
@@ -372,11 +376,11 @@ class MoReader extends BasePlugin
     /**
      * Get translation
      *
-     * @param mixed $msgctxt msgctxt
-     * @param mixed $msgId   Message id
+     * @param string $msgctxt msgctxt
+     * @param string $msgId   Message id
      * @return string
      */
-    public function pgettext($msgctxt, $msgId): string
+    public function pgettext(string $msgctxt, string $msgId): string
     {
         return self::idOrFind($msgId);
     }
