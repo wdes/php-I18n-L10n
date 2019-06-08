@@ -23,89 +23,89 @@ abstract class BasePlugin
     /**
      * Get translation for a message id
      *
-     * @param mixed $msgId Message id
+     * @param string $msgId Message id
      * @return string
      */
-    abstract public function gettext($msgId): string;
+    abstract public function gettext(string $msgId): string;
 
     /**
      * Get translation for a message id
      *
-     * @param mixed $msgId Message id
+     * @param string $msgId Message id
      * @return string
      */
-    abstract public function __($msgId): string;
+    abstract public function __(string $msgId): string;
 
     /**
      * Get translation
      *
-     * @param mixed $domain      Domain
-     * @param mixed $msgctxt     msgctxt
-     * @param mixed $msgId       Message id
-     * @param mixed $msgIdPlural Plural message id
-     * @param mixed $number      Number
+     * @param string $domain      Domain
+     * @param string $msgctxt     msgctxt
+     * @param string $msgId       Message id
+     * @param string $msgIdPlural Plural message id
+     * @param int    $number      Number
      * @return string
      */
-    abstract public function dnpgettext($domain, $msgctxt, $msgId, $msgIdPlural, $number): string;
+    abstract public function dnpgettext(string $domain, string $msgctxt, string $msgId, string $msgIdPlural, int $number): string;
 
     /**
      * Get translation
      *
-     * @param mixed $domain      Domain
-     * @param mixed $msgId       Message id
-     * @param mixed $msgIdPlural Plural message id
-     * @param mixed $number      Number
+     * @param string $domain      Domain
+     * @param string $msgId       Message id
+     * @param string $msgIdPlural Plural message id
+     * @param int    $number      Number
      * @return string
      */
-    abstract public function dngettext($domain, $msgId, $msgIdPlural, $number): string;
+    abstract public function dngettext(string $domain, string $msgId, string $msgIdPlural, int $number): string;
 
     /**
      * Get translation
      *
-     * @param mixed $msgctxt     msgctxt
-     * @param mixed $msgId       Message id
-     * @param mixed $msgIdPlural Plural message id
-     * @param mixed $number      Number
+     * @param string $msgctxt     msgctxt
+     * @param string $msgId       Message id
+     * @param string $msgIdPlural Plural message id
+     * @param int    $number      Number
      * @return string
      */
-    abstract public function npgettext($msgctxt, $msgId, $msgIdPlural, $number): string;
+    abstract public function npgettext(string $msgctxt, string $msgId, string $msgIdPlural, int $number): string;
+
+    /**
+     * Plural version of gettext
+     *
+     * @param string $msgId       Message id
+     * @param string $msgIdPlural Plural message id
+     * @param int    $number      Number
+     * @return string
+     */
+    abstract public function ngettext(string $msgId, string $msgIdPlural, int $number);
 
     /**
      * Get translation
      *
-     * @param mixed $msgId       Message id
-     * @param mixed $msgIdPlural Plural message id
-     * @param mixed $number      Number
+     * @param string $domain  Domain
+     * @param string $msgctxt msgctxt
+     * @param string $msgId   Message id
      * @return string
      */
-    abstract public function ngettext($msgId, $msgIdPlural, $number): string;
+    abstract public function dpgettext(string $domain, string $msgctxt, string $msgId): string;
 
     /**
      * Get translation
      *
-     * @param mixed $domain  Domain
-     * @param mixed $msgctxt msgctxt
-     * @param mixed $msgId   Message id
+     * @param string $domain Domain
+     * @param string $msgId  Message id
      * @return string
      */
-    abstract public function dpgettext($domain, $msgctxt, $msgId): string;
+    abstract public function dgettext(string $domain, string $msgId): string;
 
     /**
      * Get translation
      *
-     * @param mixed $domain Domain
-     * @param mixed $msgId  Message id
+     * @param string $msgctxt msgctxt
+     * @param string $msgId   Message id
      * @return string
      */
-    abstract public function dgettext($domain, $msgId): string;
-
-    /**
-     * Get translation
-     *
-     * @param mixed $msgctxt msgctxt
-     * @param mixed $msgId   Message id
-     * @return string
-     */
-    abstract public function pgettext($msgctxt, $msgId): string;
+    abstract public function pgettext(string $msgctxt, string $msgId): string;
 
 }

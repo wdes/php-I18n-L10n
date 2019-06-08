@@ -44,7 +44,6 @@ class MoReader extends BasePlugin
     {
         if (is_dir($options['localeDir']) == false) {
             throw new Exception("The directory does not exist : ".$options['localeDir']);
-            return;
         }
     }
 
@@ -56,8 +55,13 @@ class MoReader extends BasePlugin
      */
     public function readFile(string $file): stdClass
     {
-        $this->data         = new stdClass();
-        $this->fileRes      = fopen($file, 'rb');
+        $this->data = new stdClass();
+        $res        = fopen($file, 'rb');
+        if (is_resource($res)) {
+            $this->fileRes = $res;
+        } else {
+            throw new Exception($file . " could not be open.");
+        }
         $this->data->endian = self::determineByteOrder($this->fileRes);
         if ($this->data->endian === -1) {
             fclose($this->fileRes);
@@ -109,19 +113,19 @@ class MoReader extends BasePlugin
      */
     public function readTranslations(): array
     {
-        $data = array();
+        $data = [];
         for ($counter = 0; $counter < $this->data->nbrOfStrings; $counter++) {
             $msgId  = null;
             $msgStr = null;
             try {
                 $msgId = $this->readStringFromTable($counter, $this->data->msgIdTable);
             } catch(Exception $e){
-                $msgId = array('');
+                $msgId = [''];
             }
             try {
                 $msgStr = $this->readStringFromTable($counter, $this->data->msgStrTable);
             } catch(Exception $e){
-                $msgStr = array();
+                $msgStr = [];
             }
             $this->processRecord($data, $msgId, $msgStr);
         }
@@ -133,22 +137,16 @@ class MoReader extends BasePlugin
      *
      * @copyright 2015 Max Grigorian
      * @license MIT
-     * @param array $data   The record
-     * @param array $msgId  Message ids
-     * @param array $msgStr Message strings
+     * @param array $data    The record
+     * @param array $msgIds  Message ids
+     * @param array $msgStrs Message strings
      * @return void
      */
-    public function processRecord(array &$data, array $msgId, array $msgStr): void
+    public function processRecord(array &$data, array $msgIds, array $msgStrs): void
     {
         // note: Contexts are stored by storing the concatenation of the context, a EOT byte, and the original string, instead of the original string.
-        if (count($msgId) > 1 && count($msgStr) > 1) {
-            $data[$msgId[0]] = $msgStr;
-            array_shift($msgId);
-            foreach ($msgId as $string) {
-                $data[$string] = $msgStr;
-            }
-        } else {
-            $data[$msgId[0]] = $msgStr[0];
+        foreach ($msgIds as $key => $msgId) {
+            $data[$msgId] = $msgStrs[$key];
         }
     }
 
@@ -169,7 +167,12 @@ class MoReader extends BasePlugin
         if ($size > 0) {
             $offset = $table[$sizeKey + 1];
             fseek($this->fileRes, $offset);
-            return explode("\0", fread($this->fileRes, $size));
+            $read = fread($this->fileRes, $size);
+            if (is_string($read)) {
+                return explode("\0", $read);
+            } else {
+                throw new Exception("read error !");
+            }
         }
         throw new Exception("size error !");
     }
@@ -208,10 +211,15 @@ class MoReader extends BasePlugin
      */
     public static function readIntegerList(int $endian, $res, int $nbr): array
     {
-        if ($endian === self::ENDIAN_LITTLE) {
-            return unpack('V' . $nbr, fread($res, 4 * $nbr));
+        $read = fread($res, 4 * $nbr);
+        if (is_string($read)) {
+            if ($endian === self::ENDIAN_LITTLE) {
+                return unpack('V' . $nbr, $read);
+            } else {
+                return unpack('N' . $nbr, $read);
+            }
         } else {
-            return unpack('N' . $nbr, fread($res, 4 * $nbr));
+            throw new Exception("read error !");
         }
     }
 
@@ -226,21 +234,26 @@ class MoReader extends BasePlugin
      */
     public static function readInteger(int $endian, $res)
     {
-        if ($endian === self::ENDIAN_LITTLE) {
-            $result = unpack('Vint', fread($res, 4));
+        $read = fread($res, 4);
+        if (is_string($read)) {
+            if ($endian === self::ENDIAN_LITTLE) {
+                $result = unpack('Vint', $read);
+            } else {
+                $result = unpack('Nint', $read);
+            }
+            return $result['int'];
         } else {
-            $result = unpack('Nint', fread($res, 4));
+            throw new Exception("read error !");
         }
-        return $result['int'];
     }
 
     /**
      * Return string id or translation
      *
-     * @param mixed $msgId The message id
+     * @param string $msgId The message id
      * @return string
      */
-    public function idOrFind($msgId): string
+    public function idOrFind(string $msgId): string
     {
         if (array_key_exists($msgId, $this->data->translations)) {
             return $this->data->translations[$msgId];
@@ -252,10 +265,10 @@ class MoReader extends BasePlugin
     /**
      * Get translation for a message id
      *
-     * @param mixed $msgId Message id
+     * @param string $msgId Message id
      * @return string
      */
-    public function __($msgId): string
+    public function __(string $msgId): string
     {
         return self::gettext($msgId);
     }
@@ -263,103 +276,111 @@ class MoReader extends BasePlugin
     /**
      * Get translation for a message id
      *
-     * @param mixed $msgId Message id
+     * @param string $msgId Message id
      * @return string
      */
-    public function gettext($msgId): string
+    public function gettext(string $msgId): string
     {
         return self::idOrFind($msgId);
     }
 
     /**
-         * Get translation
-         *
-         * @param mixed $domain      Domain
-         * @param mixed $msgctxt     msgctxt
-         * @param mixed $msgId       Message id
-         * @param mixed $msgIdPlural Plural message id
-         * @param mixed $number      Number
-         * @return string
-         */
-    public function dnpgettext($domain, $msgctxt, $msgId, $msgIdPlural, $number): string
+     * Get translation
+     *
+     * @param string $domain      Domain
+     * @param string $msgctxt     msgctxt
+     * @param string $msgId       Message id
+     * @param string $msgIdPlural Plural message id
+     * @param int    $number      Number
+     * @return string
+     */
+    public function dnpgettext(string $domain, string $msgctxt, string $msgId, string $msgIdPlural, int $number): string
     {
         return self::idOrFind($msgId);
     }
 
     /**
-         * Get translation
-         *
-         * @param mixed $domain      Domain
-         * @param mixed $msgId       Message id
-         * @param mixed $msgIdPlural Plural message id
-         * @param mixed $number      Number
-         * @return string
-         */
-    public function dngettext($domain, $msgId, $msgIdPlural, $number): string
+     * Get translation
+     *
+     * @param string $domain      Domain
+     * @param string $msgId       Message id
+     * @param string $msgIdPlural Plural message id
+     * @param int    $number      Number
+     * @return string
+     */
+    public function dngettext(string $domain, string $msgId, string $msgIdPlural, int $number): string
     {
         return self::idOrFind($msgId);
     }
 
     /**
-         * Get translation
-         *
-         * @param mixed $msgctxt     msgctxt
-         * @param mixed $msgId       Message id
-         * @param mixed $msgIdPlural Plural message id
-         * @param mixed $number      Number
-         * @return string
-         */
-    public function npgettext($msgctxt, $msgId, $msgIdPlural, $number): string
+     * Get translation
+     *
+     * @param string $msgctxt     msgctxt
+     * @param string $msgId       Message id
+     * @param string $msgIdPlural Plural message id
+     * @param int    $number      Number
+     * @return string
+     */
+    public function npgettext(string $msgctxt, string $msgId, string $msgIdPlural, int $number): string
+    {
+        if ($number > 1) {
+            return self::idOrFind($msgIdPlural);
+        } else {
+            return self::idOrFind($msgId);
+        }
+    }
+
+    /**
+     * Plural version of gettext
+     *
+     * @param string $msgId       Message id
+     * @param string $msgIdPlural Plural message id
+     * @param int    $number      Number
+     * @return string
+     */
+    public function ngettext(string $msgId, string $msgIdPlural, int $number): string
+    {
+        if ($number > 1) {
+            return self::idOrFind($msgIdPlural);
+        } else {
+            return self::idOrFind($msgId);
+        }
+    }
+
+    /**
+     * Get translation
+     *
+     * @param string $domain  Domain
+     * @param string $msgctxt msgctxt
+     * @param string $msgId   Message id
+     * @return string
+     */
+    public function dpgettext(string $domain, string $msgctxt, string $msgId): string
     {
         return self::idOrFind($msgId);
     }
 
     /**
-         * Get translation
-         *
-         * @param mixed $msgId       Message id
-         * @param mixed $msgIdPlural Plural message id
-         * @param mixed $number      Number
-         * @return string
-         */
-    public function ngettext($msgId, $msgIdPlural, $number): string
+     * Get translation
+     *
+     * @param string $domain Domain
+     * @param string $msgId  Message id
+     * @return string
+     */
+    public function dgettext(string $domain, string $msgId): string
     {
         return self::idOrFind($msgId);
     }
 
     /**
-         * Get translation
-         *
-         * @param mixed $domain  Domain
-         * @param mixed $msgctxt msgctxt
-         * @param mixed $msgId   Message id
-         * @return string
-         */
-    public function dpgettext($domain, $msgctxt, $msgId): string
-    {
-        return self::idOrFind($msgId);
-    }
-
-    /**
-         * Get translation
-         *
-         * @param mixed $domain Domain
-         * @param mixed $msgId  Message id
-         * @return string
-         */
-    public function dgettext($domain, $msgId): string
-    {
-        return self::idOrFind($msgId);
-    }
-
-    /**
-         * Get translation
-         *
-         * @param mixed $msgctxt msgctxt
-         * @param mixed $msgId   Message id
-         * @return string
-         */
-    public function pgettext($msgctxt, $msgId): string
+     * Get translation
+     *
+     * @param string $msgctxt msgctxt
+     * @param string $msgId   Message id
+     * @return string
+     */
+    public function pgettext(string $msgctxt, string $msgId): string
     {
         return self::idOrFind($msgId);
     }

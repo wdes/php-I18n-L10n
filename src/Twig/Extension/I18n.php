@@ -23,9 +23,11 @@ class I18n extends I18nExtension
      */
     public function getFilters(): array
     {
-        return array(
-            new TwigFilter('trans'),
-        );
+        return [
+            new TwigFilter(
+                'trans', '\Wdes\PIL\Launcher::gettext'
+            ),
+        ];
     }
 
     /**
@@ -35,9 +37,9 @@ class I18n extends I18nExtension
      */
     public function getTokenParsers(): array
     {
-        return array(
+        return [
             new TokenParser()
-        );
+        ];
     }
 
 }

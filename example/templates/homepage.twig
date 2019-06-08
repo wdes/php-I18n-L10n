@@ -1,0 +1,25 @@
+<html>
+    <title>{% trans %}Homepage{% endtrans %}</title>
+    <body>
+        {{ say }}<br/>
+        {% trans %}Homepage{% notes %}The title of the page{% endtrans %}<br/>
+        {% trans 'Another format' %}<br/>
+        {{ 'A filter'|trans }}<br/>
+        {{ 'With "%s" apples'|trans|format(3) }}<br/>
+        {% set total = 4 %}
+        {% trans %}
+            1 database
+        {% plural total %}
+            {{ count }} databases
+        {% endtrans %}
+
+        {% set totalFiles = 1 %}
+        {% trans %}
+            1 file
+        {% plural totalFiles %}
+            {{ count }} files
+        {% notes %}
+            The number of files
+        {% endtrans %}
+    </body>
+</html>

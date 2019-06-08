@@ -25,14 +25,14 @@ class UtilsTest extends TestCase
      */
     public function ELFHashProvider(): array
     {
-        return array(
-            array("0",48),
-            array("ABCDEFGHIJKLMN", 178683902),
-            array("Dashboard", 166269444),
-            array("ABCDEFGHIJKLMNABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz", 163039834),
-            array("abcdefghijklmnopqrstuvwxyz1234567890", 126631744),
-            array("jdfgsdhfsdfsd 6445dsfsd7fg/*/+bfjsdgf%$^", 248446350)
-        );
+        return [
+            ["0",48],
+            ["ABCDEFGHIJKLMN", 178683902],
+            ["Dashboard", 166269444],
+            ["ABCDEFGHIJKLMNABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz", 163039834],
+            ["abcdefghijklmnopqrstuvwxyz1234567890", 126631744],
+            ["jdfgsdhfsdfsd 6445dsfsd7fg/*/+bfjsdgf%$^", 248446350],
+        ];
     }
 
     /**

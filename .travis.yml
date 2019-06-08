@@ -1,64 +1,129 @@
-dist: trusty
-
 language: php
 
-php:
-  - "7.1"
-  - "7.2"
-
-sudo: required
-
-env:
-  matrix:
-    - CI_TYPE=phpunit
-
 before_script:
-  - ./scripts/ci/install-reporters.sh
-  - ./scripts/ci/install.sh
-
+  - "./scripts/ci/install-reporters.sh"
+  - "./scripts/ci/install.sh"
 script:
   - ./scripts/ci/ci-$CI_TYPE.sh
-
 install:
-    # flags to pass to install
-    - flags="--ansi --prefer-dist --no-interaction --optimize-autoloader --no-suggest --no-progress"
-    # install dependencies using system provided composer binary
-    - composer install $flags
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - if [ "$CI_COMPOSER" = "yes" ]; then composer install --ansi --prefer-dist --no-interaction --optimize-autoloader --no-suggest --no-progress; fi
 
 after_script:
-  - ./codacy-coverage.phar clover build/logs/clover.xml
+  - if [ "$TRAVIS_BUILD_STAGE_NAME" = "tests" ]; then ./codacy-coverage.phar clover build/logs/clover.xml; else echo "skipped codacy"; fi
 
-matrix:
-  fast_finish: true
+stages:
+  - name: lint
+  - name: tests
+
+jobs:
   include:
-    - php: "7.2"
-      env: CI_TYPE=phpstan
-
-    - php: "7.2"
-      env: CI_TYPE=phpcs
-
-    - os: osx
-      language: generic
+    - stage: tests
+      php: "7.1"
+      env:
+        - CI_TYPE=phpunit
+        - CI_COMPOSER=yes
+      name: "PHPUNIT - PHP 7.1"
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) -cF php
+    - stage: tests
       php: "7.2"
-      env: CI_TYPE=phpunit
+      env:
+        - CI_TYPE=phpunit
+        - CI_COMPOSER=yes
+      name: "PHPUNIT - PHP 7.2"
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) -cF php
+    - stage: tests
+      php: "7.3"
+      env:
+        - CI_TYPE=phpunit
+        - CI_COMPOSER=yes
+      name: "PHPUNIT - PHP 7.3"
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) -cF php
+    - stage: tests
+      os: osx
+      language: node_js
+      node_js: "10"
+      env:
+        - CI_TYPE=phpunit
+        - CI_COMPOSER=yes
+      name: "PHPUNIT - PHP 7.1"
+      addons:
+        homebrew:
+          packages:
+            - php@7.1
+            - composer
       before_install:
-        - ./scripts/ci/install-osx.sh
+        - mkdir ~/.homebrew_logs
+        - export HOMEBREW_LOGS="~/.homebrew_logs"
+        - export HOMEBREW_TEMP="/tmp"
+        - export HOMEBREW_INSTALL_BADGE="🌻"
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) -cF php
+    - stage: tests
+      os: osx
+      language: node_js
+      node_js: "10"
+      env:
+        - CI_TYPE=phpunit
+        - CI_COMPOSER=yes
+      name: "PHPUNIT - PHP 7.2"
+      addons:
+        homebrew:
+          packages:
+            - php@7.2
+            - composer
+      before_install:
+        - mkdir ~/.homebrew_logs
+        - export HOMEBREW_LOGS="~/.homebrew_logs"
+        - export HOMEBREW_TEMP="/tmp"
+        - export HOMEBREW_INSTALL_BADGE="🌻"
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) -cF php
+    - stage: tests
+      os: osx
+      language: node_js
+      node_js: "10"
+      env:
+        - CI_TYPE=phpunit
+        - CI_COMPOSER=yes
+      name: "PHPUNIT - PHP 7.3"
+      addons:
+        homebrew:
+          packages:
+            - php@7.3
+            - composer
+      before_install:
+        - mkdir ~/.homebrew_logs
+        - export HOMEBREW_LOGS="~/.homebrew_logs"
+        - export HOMEBREW_TEMP="/tmp"
+        - export HOMEBREW_INSTALL_BADGE="🌻"
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) -cF php
+    - stage: lint
+      php: "7.3"
+      env:
+        - CI_TYPE=phpstan
+        - CI_COMPOSER=yes
+      name: "PHPSTAN - PHP 7.3"
+    - stage: lint
+      php: "7.3"
+      env:
+        - CI_TYPE=phpcs
+        - CI_COMPOSER=yes
+      name: "PHPCS - PHP 7.3"
 
 cache:
-  apt: true
+  ccache: true
   directories:
     - $HOME/.composer/cache/
-    - $HOME/.cache/bower
-    - $HOME/.npm
-    - $HOME/.cache/ci
     - /var/cache/apt
-    - ~/Library/Caches/Homebrew
+    - $HOME/Library/Caches/Homebrew
+
+before_cache:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 
 addons:
   apt:
     update: false
-    packages:
-    - git
