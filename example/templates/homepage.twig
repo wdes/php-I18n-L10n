@@ -1,6 +1,16 @@
 <html>
     <title>{% trans %}Homepage{% endtrans %}</title>
     <body>
-        {{ say }}
+        {{ say }}<br/>
+        {% trans %}Homepage{% notes %}The title of the page{% endtrans %}<br/>
+        {% trans 'Another format' %}<br/>
+        {{ 'A filter'|trans }}<br/>
+        {{ 'With "%s" apples'|trans|format(3) }}<br/>
+        {% set total = 4 %}
+        {% trans %}
+            1 database
+        {% plural total %}
+            {{ count }} databases
+        {% endtrans %}
     </body>
 </html>

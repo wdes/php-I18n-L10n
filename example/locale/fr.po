@@ -1,0 +1,41 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Test\n"
+"Report-Msgid-Bugs-To: williamdes@wdes.fr\n"
+"POT-Creation-Date: 2019-06-08 15:57+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: Wdes\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.1.1\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#. l10n: The title of the page
+#: example/templates/homepage.twig:2
+#: example/templates/homepage.twig:5
+msgid "Homepage"
+msgstr "Page d'accueil"
+
+#: example/templates/homepage.twig:6
+msgid "Another format"
+msgstr "Un autre format"
+
+#: example/templates/homepage.twig:7
+msgid "A filter"
+msgstr "Un filtre"
+
+#: example/templates/homepage.twig:8
+#, php-format
+msgid "With \"%s\" apples"
+msgstr "Avec des \"%s\" pommes"
+
+#: example/templates/homepage.twig:10
+#, php-format
+msgid "1 database"
+msgid_plural "%count% databases"
+msgstr[0] "Une base de données"
+msgstr[1] "%count% bases de données"
