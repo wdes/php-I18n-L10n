@@ -40,7 +40,6 @@ class I18nTest extends TestCase
      */
     public function setUp(): void
     {
-
         $S       = DIRECTORY_SEPARATOR;
         $dataDir = __DIR__.$S."..".$S."..".$S."data".$S;
 
@@ -53,7 +52,7 @@ class I18nTest extends TestCase
         $data             = $moReader->readFile($dataDir."abc.mo");
         Launcher::$plugin = $moReader;
 
-        $loader      = new \Twig_Loader_Filesystem();
+        $loader            = new \Twig_Loader_Filesystem();
         $this->memoryCache = new \Wdes\PIL\Twig\MemoryCache();
         $this->twig        = new TwigEnv(
             $loader, [
