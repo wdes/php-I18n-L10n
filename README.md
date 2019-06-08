@@ -7,7 +7,20 @@ PHP library/api to provide Internationalisation and Localisation
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwdes%2Fphp-I18n-L10n.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwdes%2Fphp-I18n-L10n?ref=badge_shield)
 [![HitCount](https://hits.dwyl.com/wdes/php-I18n-L10n.svg?style=flat)](https://hits.dwyl.com/wdes/php-I18n-L10n)
 ![Packagist](https://img.shields.io/packagist/l/wdes/php-I18n-L10n.svg)
-
+[![Latest Stable Version](https://poser.pugx.org/wdes/php-I18n-L10n/v/stable)](https://packagist.org/packages/wdes/php-I18n-L10n)
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwdes%2Fphp-I18n-L10n.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwdes%2Fphp-I18n-L10n?ref=badge_large)
+
+## How to use
+
+```
+composer require wdes/php-i18n-l10n
+```
+
+Have a look at example file [example/simple.php](example/simple.php)
+
+### Scripts
+
+This package includes some scripts that can be usefull [scripts/tools](scripts/tools)
+Here is an example to use them : [scripts/update-example.sh](scripts/update-example.sh)
