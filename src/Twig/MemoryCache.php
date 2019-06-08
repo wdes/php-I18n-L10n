@@ -5,11 +5,14 @@ declare(strict_types = 1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 namespace Wdes\PIL\Twig;
 
+use \Twig\Cache\CacheInterface;
+use \Twig\TemplateWrapper;
+
 /**
  * Token parser for Twig
  * @license MPL-2.0
  */
-class MemoryCache implements \Twig_CacheInterface
+class MemoryCache implements CacheInterface
 {
     /**
      * Contains all templates
@@ -67,10 +70,10 @@ class MemoryCache implements \Twig_CacheInterface
     /**
      * Get the cached string for key
      *
-     * @param \Twig_Template $template The template
+     * @param TemplateWrapper $template The template
      * @return string
      */
-    public function getFromCache(\Twig_Template $template): string
+    public function getFromCache(TemplateWrapper $template): string
     {
         return $this->memory["memcache_".$template->getTemplateName()];
     }
@@ -78,17 +81,16 @@ class MemoryCache implements \Twig_CacheInterface
     /**
      * Extract source code from memory cache
      *
-     * @param \Twig_Template $template The template
+     * @param TemplateWrapper $template The template
      * @return string
      */
-    public function extractDoDisplayFromCache(\Twig_Template $template): string
+    public function extractDoDisplayFromCache(TemplateWrapper $template): string
     {
         $content = self::getFromCache($template);
         // "/function ([a-z_]+)\("
         preg_match_all(
-            '/protected function doDisplay\(([a-z\s,\$=\(\)]+)\)([\s]+){([=%\sa-z\/0-9-\>:\(\)\\\";.,\$\[\]?_-]+)/msi', $content, $output_array
+            '/protected function doDisplay\(([a-z\s,\$=\[\]]+)\)([\s]+){([=%\sa-z\/0-9-\>:\(\)\\\";.,\$\[\]?_-]+)/msi', $content, $output_array
         );
-        //echo $content;
         return $output_array[3][0];
     }
 
