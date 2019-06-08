@@ -90,16 +90,25 @@ class TranslationNode extends TransNode
                 $compiler->raw(', ')->subcompile($pMessage)->raw(', abs(')->subcompile($this->hasNode('count') ? $this->getNode('count') : null)->raw(')');
             }
             $compiler->raw('), [');
-            foreach ($vars as $var) {
+            $lastKey = array_key_last($vars);
+            foreach ($vars as $key => $var) {
                 $attrName = $var->getAttribute('name');
                 if ($attrName === 'count') {
                     $compiler->string('%count%')->raw(' => abs(');
                     if ($this->hasNode('count')) {
                         $compiler->subcompile($this->getNode('count'));
                     }
-                    $compiler->raw('), ');
+                    if ($key === $lastKey) {
+                        $compiler->raw(')');
+                    } else {
+                        $compiler->raw('), ');
+                    }
                 } else {
-                    $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var)->raw(', ');
+                    if ($key === $lastKey) {
+                        $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var);
+                    } else {
+                        $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var)->raw(', ');
+                    }
                 }
             }
             $compiler->raw("]);\n");

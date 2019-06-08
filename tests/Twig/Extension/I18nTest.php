@@ -140,7 +140,7 @@ class I18nTest extends TestCase
         $this->assertContains(
             'echo strtr(\Wdes\PIL\Launcher::getPlugin()->ngettext("One person"'.
             ', "%nbr% persons", abs(($context["nbr_persons"] ?? null))),'.
-            ' ["%nbr%" => ($context["nbr"] ?? null), ]);',
+            ' ["%nbr%" => ($context["nbr"] ?? null)]);',
             $generatedCode
         );
         $html = $template->render(["nbr" => 5]);
@@ -162,7 +162,7 @@ class I18nTest extends TestCase
             'echo strtr(\Wdes\PIL\Launcher::getPlugin()->ngettext('.
             '"one user likes this.", "%nbr% users likes this.",'.
             ' abs(($context["nbr_persons"] ?? null))),'.
-            ' ["%nbr%" => ($context["nbr"] ?? null), ]);',
+            ' ["%nbr%" => ($context["nbr"] ?? null)]);',
             $generatedCode
         );
         $this->assertContains(
@@ -231,7 +231,7 @@ class I18nTest extends TestCase
             ' "persons and %count% dogs", abs(twig_get_attribute($this->env,'.
             ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1))),'.
             ' ["%count%" => abs(twig_get_attribute($this->env,'.
-            ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1)), ]);',
+            ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1))]);',
             $generatedCode
         );
         $html = $template->render(["a" => ["1", "2"], "nbrdogs" => 3]);
