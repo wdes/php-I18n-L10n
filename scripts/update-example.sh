@@ -21,3 +21,5 @@ $ME/tools/update-po-files.php \
     --json-mapping="$ROOTDIR/example/locale/replace.json"
 rm -rf $ROOTDIR/example/twigcache
 rm $ROOTDIR/example/locale/replace.json
+
+msgfmt --directory="$ROOTDIR/example/locale" --check -o "$ROOTDIR/example/locale/fr.mo" "$ROOTDIR/example/locale/fr.po"
