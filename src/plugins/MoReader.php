@@ -56,8 +56,13 @@ class MoReader extends BasePlugin
      */
     public function readFile(string $file): stdClass
     {
-        $this->data         = new stdClass();
-        $this->fileRes      = fopen($file, 'rb');
+        $this->data = new stdClass();
+        $res        = fopen($file, 'rb');
+        if (is_resource($res)) {
+            $this->fileRes = $res;
+        } else {
+            throw new Exception($file . " could not be open.");
+        }
         $this->data->endian = self::determineByteOrder($this->fileRes);
         if ($this->data->endian === -1) {
             fclose($this->fileRes);
@@ -169,7 +174,12 @@ class MoReader extends BasePlugin
         if ($size > 0) {
             $offset = $table[$sizeKey + 1];
             fseek($this->fileRes, $offset);
-            return explode("\0", fread($this->fileRes, $size));
+            $read = fread($this->fileRes, $size);
+            if (is_string($read)) {
+                return explode("\0", $read);
+            } else {
+                throw new Exception("read error !");
+            }
         }
         throw new Exception("size error !");
     }
@@ -208,10 +218,15 @@ class MoReader extends BasePlugin
      */
     public static function readIntegerList(int $endian, $res, int $nbr): array
     {
-        if ($endian === self::ENDIAN_LITTLE) {
-            return unpack('V' . $nbr, fread($res, 4 * $nbr));
+        $read = fread($res, 4 * $nbr);
+        if (is_string($read)) {
+            if ($endian === self::ENDIAN_LITTLE) {
+                return unpack('V' . $nbr, $read);
+            } else {
+                return unpack('N' . $nbr, $read);
+            }
         } else {
-            return unpack('N' . $nbr, fread($res, 4 * $nbr));
+            throw new Exception("read error !");
         }
     }
 
@@ -226,12 +241,17 @@ class MoReader extends BasePlugin
      */
     public static function readInteger(int $endian, $res)
     {
-        if ($endian === self::ENDIAN_LITTLE) {
-            $result = unpack('Vint', fread($res, 4));
+        $read = fread($res, 4);
+        if (is_string($read)) {
+            if ($endian === self::ENDIAN_LITTLE) {
+                $result = unpack('Vint', $read);
+            } else {
+                $result = unpack('Nint', $read);
+            }
+            return $result['int'];
         } else {
-            $result = unpack('Nint', fread($res, 4));
+            throw new Exception("read error !");
         }
-        return $result['int'];
     }
 
     /**
