@@ -18,6 +18,35 @@
         "phpunit": "phpunit --configuration ./tests/phpunit.xml",
         "update:example": "./scripts/update-example.sh"
     },
+    "non-feature-branches": ["dev"],
+    "archive": {
+        "exclude": [
+            "/tests",
+            "/scripts/ci",
+            "/.npmignore",
+            "/.editorconfig",
+            "/.gitmodules",
+            "/CODEOWNERS",
+            "/wdes-php-i18n-l10n-*.tar",
+            "/docs",
+            "/.gitignore",
+            "/phpcs.xml",
+            "/phpstan.neon",
+            "/.travis.yml",
+            "/codecov.yml",
+            "/.phpunit.result.cache"
+        ]
+    },
+    "keywords": [
+        "i18n",
+        "l10n",
+        "mo",
+        "gettext",
+        "pot-generator",
+        "twig",
+        "library",
+        "composer-package"
+    ],
     "authors": [
         {
             "name": "William Desportes",
