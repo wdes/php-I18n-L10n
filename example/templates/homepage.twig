@@ -12,5 +12,14 @@
         {% plural total %}
             {{ count }} databases
         {% endtrans %}
+
+        {% set totalFiles = 1 %}
+        {% trans %}
+            1 file
+        {% plural totalFiles %}
+            {{ count }} files
+        {% notes %}
+            The number of files
+        {% endtrans %}
     </body>
 </html>

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Test\n"
 "Report-Msgid-Bugs-To: williamdes@wdes.fr\n"
-"POT-Creation-Date: 2019-06-08 15:57+0200\n"
+"POT-Creation-Date: 2019-06-08 16:28+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Wdes\n"
@@ -39,3 +39,11 @@ msgid "1 database"
 msgid_plural "%count% databases"
 msgstr[0] "Une base de données"
 msgstr[1] "%count% bases de données"
+
+#. l10n: The number of files
+#: example/templates/homepage.twig:17
+#, php-format
+msgid "1 file"
+msgid_plural "%count% files"
+msgstr[0] "Un fichier"
+msgstr[1] "%count% fichiers"
