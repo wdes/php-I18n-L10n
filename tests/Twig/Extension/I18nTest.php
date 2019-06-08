@@ -9,8 +9,10 @@ namespace Wdes\PIL\Twig\Extension;
 use \PHPUnit\Framework\TestCase;
 use \Wdes\PIL\Twig\Extension\I18n as ExtensionI18n;
 use \Twig\Environment as TwigEnv;
+use \Twig\Loader\FilesystemLoader as TwigLoaderFilesystem;
 use \Wdes\PIL\plugins\MoReader;
 use \Wdes\PIL\Launcher;
+use \Wdes\PIL\Twig\MemoryCache;
 
 /**
  * Test class for Utils
@@ -22,7 +24,7 @@ class I18nTest extends TestCase
     /**
      * The memory cache
      *
-     * @var \Wdes\PIL\Twig\MemoryCache
+     * @var MemoryCache
      */
     private $memoryCache = null;
 
@@ -43,20 +45,17 @@ class I18nTest extends TestCase
         $S       = DIRECTORY_SEPARATOR;
         $dataDir = __DIR__.$S."..".$S."..".$S."data".$S;
 
-        $templatesDir = $dataDir."twig-templates".$S;
-        //$tmpDir = $dataDir."twig-templates".$S."tmp".$S;
-
-        $moReader         = new MoReader(
+        $moReader = new MoReader(
             ["localeDir" => $dataDir]
         );
-        $data             = $moReader->readFile($dataDir."abc.mo");
+        $moReader->readFile($dataDir . "abc.mo");
         Launcher::$plugin = $moReader;
 
-        $loader            = new \Twig_Loader_Filesystem();
-        $this->memoryCache = new \Wdes\PIL\Twig\MemoryCache();
+        $loader            = new TwigLoaderFilesystem();
+        $this->memoryCache = new MemoryCache();
         $this->twig        = new TwigEnv(
             $loader, [
-                'cache' => $this->memoryCache,//$tmpDir | false
+                'cache' => $this->memoryCache,
                 'debug' => true
             ]
         );

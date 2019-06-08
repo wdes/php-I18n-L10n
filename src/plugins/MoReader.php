@@ -44,7 +44,6 @@ class MoReader extends BasePlugin
     {
         if (is_dir($options['localeDir']) == false) {
             throw new Exception("The directory does not exist : ".$options['localeDir']);
-            return;
         }
     }
 
