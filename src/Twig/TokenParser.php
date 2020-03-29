@@ -114,7 +114,7 @@ class TokenParser extends AbstractTokenParser
                 continue;
             }
 
-            throw new SyntaxError(sprintf('The text to be translated with "trans" can only contain references to simple variables'), $lineNo);
+            throw new SyntaxError('The text to be translated with "trans" can only contain references to simple variables', $lineNo);
         }
     }
 
