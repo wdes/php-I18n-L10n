@@ -38,7 +38,7 @@ class Utils
         $h   = 0;
         $len = strlen($str);
         while (++$i < $len) {
-            $ord = ord($str{$i});
+            $ord = ord($str[$i]);
             $h   = ( $h << 4 ) + $ord;
             $g   = $h & 0xf0000000;
             if ($g !== 0) {
