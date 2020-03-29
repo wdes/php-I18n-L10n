@@ -6,6 +6,7 @@ declare(strict_types = 1);
  */
 namespace Wdes\PIL\plugins;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Wdes\PIL\plugins\MoReader;
 use \stdClass;
@@ -37,16 +38,16 @@ class MoReaderTest extends TestCase
     /**
      * test Dir does not exist
      *
-     * @expectedException     Exception
-     * @expectedExceptionCode 0
-     * @expectedExceptionMessageRegExp /The directory does not exist : (.+)/
-     *
      * @return void
      */
     public function testException(): void
     {
+        $folderString = self::$dir . str_shuffle("abcdefghijklmnopqrstuv");
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('The directory does not exist : ' . $folderString);
+        $this->expectExceptionCode(0);
         new MoReader(
-            ["localeDir" => self::$dir.str_shuffle("abcdefghijklmnopqrstuv")]
+            ['localeDir' => $folderString]
         );
     }
 
