@@ -1,5 +1,2 @@
 parameters:
-	bootstrap: %rootDir%/../../../src/bootstrap.php
 	checkMissingIterableValueType: false
-	excludes_analyse:
-		- src/Node/TransNode.php
