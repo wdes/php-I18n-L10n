@@ -23,7 +23,7 @@ class Launcher
     public static $plugin;
 
     /**
-     * Return regitered plugin
+     * Return registered plugin
      *
      * @return BasePlugin
      */
