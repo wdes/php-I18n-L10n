@@ -4,7 +4,7 @@ declare(strict_types = 1);
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-namespace Wdes\PIL\Twig;
+namespace Wdes\phpI18nL10n\Twig;
 
 use Twig\Compiler;
 use Twig\Node\Expression\AbstractExpression;
@@ -75,7 +75,7 @@ class TranslationNode extends Node
             $vars                   = array_merge($vars, $Pvars);
         }
 
-        $prefix = '\Wdes\PIL\Launcher::getPlugin()->';
+        $prefix = '\Wdes\phpI18nL10n\Launcher::getPlugin()->';
         if ($this->hasNode('context')) {
             $function = $this->hasNode('plural') ? 'ngettext' : 'pgettext';
         } else {

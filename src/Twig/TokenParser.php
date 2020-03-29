@@ -3,9 +3,9 @@ declare(strict_types = 1);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-namespace Wdes\PIL\Twig;
+namespace Wdes\phpI18nL10n\Twig;
 
-use \Wdes\PIL\Twig\TranslationNode;
+use Wdes\phpI18nL10n\Twig\TranslationNode;
 use Twig\Error\SyntaxError;
 use Twig\Node\Expression\NameExpression;
 use Twig\Node\Node;

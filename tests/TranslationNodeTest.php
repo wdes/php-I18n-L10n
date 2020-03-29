@@ -12,8 +12,8 @@ use Twig\Compiler;
 use Twig\Node\Expression\NameExpression;
 use \Twig\Environment as TwigEnv;
 use \Twig\Loader\FilesystemLoader as TwigLoaderFilesystem;
-use \Wdes\PIL\Twig\TranslationNode;
-use \Wdes\PIL\Twig\MemoryCache;
+use Wdes\phpI18nL10n\Twig\TranslationNode;
+use Wdes\phpI18nL10n\Twig\MemoryCache;
 
 /**
  * @author William Desportes <williamdes@wdes.fr>

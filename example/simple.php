@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use \Wdes\PIL\plugins\MoReader;
-use \Wdes\PIL\Launcher;
-use \Wdes\PIL\Twig\Extension\I18n as ExtensionI18n;
+use \Wdes\phpI18nL10n\plugins\MoReader;
+use \Wdes\phpI18nL10n\Launcher;
+use \Wdes\phpI18nL10n\Twig\Extension\I18n as ExtensionI18n;
 use \Twig\Environment as TwigEnvironment;
 use \Twig\Loader\FilesystemLoader as TwigLoaderFilesystem;
 

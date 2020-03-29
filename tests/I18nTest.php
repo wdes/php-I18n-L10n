@@ -7,12 +7,12 @@ declare(strict_types = 1);
 namespace Wdes\phpI18nL10n\Tests;
 
 use \PHPUnit\Framework\TestCase;
-use \Wdes\PIL\Twig\Extension\I18n as ExtensionI18n;
+use Wdes\phpI18nL10n\Twig\Extension\I18n as ExtensionI18n;
 use \Twig\Environment as TwigEnv;
 use \Twig\Loader\FilesystemLoader as TwigLoaderFilesystem;
-use \Wdes\PIL\plugins\MoReader;
-use \Wdes\PIL\Launcher;
-use \Wdes\PIL\Twig\MemoryCache;
+use Wdes\phpI18nL10n\plugins\MoReader;
+use Wdes\phpI18nL10n\Launcher;
+use Wdes\phpI18nL10n\Twig\MemoryCache;
 
 /**
  * @author William Desportes <williamdes@wdes.fr>
@@ -72,7 +72,7 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
-            'echo \Wdes\PIL\Launcher::getPlugin()->gettext("Translate this");',
+            'echo \Wdes\phpI18nL10n\Launcher::getPlugin()->gettext("Translate this");',
             $generatedCode
         );
         $html = $template->render([]);
@@ -91,7 +91,7 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
-            'echo \Wdes\PIL\Launcher::getPlugin()->gettext("Translate this");',
+            'echo \Wdes\phpI18nL10n\Launcher::getPlugin()->gettext("Translate this");',
             $generatedCode
         );
         $this->assertStringContainsString(
@@ -115,7 +115,7 @@ class I18nTest extends TestCase
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
 
         $this->assertStringContainsString(
-            'echo \Wdes\PIL\Launcher::getPlugin()->pgettext("NayanCat", "Translate this");',
+            'echo \Wdes\phpI18nL10n\Launcher::getPlugin()->pgettext("NayanCat", "Translate this");',
             $generatedCode
         );
         $html = $template->render([]);
@@ -135,7 +135,8 @@ class I18nTest extends TestCase
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
 
         $this->assertStringContainsString(
-            'echo strtr(\Wdes\PIL\Launcher::getPlugin()->pgettext("The user name", "Translate this %name%"), ["%name%" => ($context["name"] ?? null)]);',
+            'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->pgettext("The user name", "Translate this %name%"), '
+            . '["%name%" => ($context["name"] ?? null)]);',
             $generatedCode
         );
         $html = $template->render(
@@ -159,7 +160,7 @@ class I18nTest extends TestCase
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
 
         $this->assertStringContainsString(
-            'echo strtr(\Wdes\PIL\Launcher::getPlugin()->pgettext("The user name", "Translate this %key%: %value%"), '
+            'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->pgettext("The user name", "Translate this %key%: %value%"), '
             . '["%key%" => ($context["key"] ?? null), "%value%" => ($context["value"] ?? null)]);',
             $generatedCode
         );
@@ -184,7 +185,7 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
-            'echo strtr(\Wdes\PIL\Launcher::getPlugin()->ngettext("One person"'.
+            'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person"'.
             ', "%nbr% persons", abs(($context["nbr_persons"] ?? null))),'.
             ' ["%nbr%" => ($context["nbr"] ?? null)]);',
             $generatedCode
@@ -205,7 +206,7 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
-            'echo strtr(\Wdes\PIL\Launcher::getPlugin()->ngettext('.
+            'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext('.
             '"one user likes this.", "%nbr% users likes this.",'.
             ' abs(($context["nbr_persons"] ?? null))),'.
             ' ["%nbr%" => ($context["nbr"] ?? null)]);',
@@ -231,7 +232,7 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
-            'echo \Wdes\PIL\Launcher::getPlugin()->ngettext("One person", "persons", abs(($context["a"] ?? null)));',
+            'echo \Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person", "persons", abs(($context["a"] ?? null)));',
             $generatedCode
         );
         $html = $template->render(["nbr" => 5]);
@@ -252,7 +253,7 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
-            'echo \Wdes\PIL\Launcher::getPlugin()->ngettext("One person",'.
+            'echo \Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person",'.
             ' "persons", abs(twig_get_attribute($this->env, $this->source,'.
             ' ($context["a"] ?? null), "count", [], "any", false, false, false, 1)));',
             $generatedCode
@@ -273,7 +274,7 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
-            'echo strtr(\Wdes\PIL\Launcher::getPlugin()->ngettext("One person",'.
+            'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person",'.
             ' "persons and %count% dogs", abs(twig_get_attribute($this->env,'.
             ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1))),'.
             ' ["%count%" => abs(twig_get_attribute($this->env,'.
