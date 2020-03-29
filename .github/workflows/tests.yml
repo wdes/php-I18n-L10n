@@ -17,6 +17,7 @@ jobs:
               with:
                   php-version: ${{ matrix.php-version }}
                   coverage: xdebug
+                  extension: mbstring
             - name: Cache module
               uses: actions/cache@v1.1.2
               with:
