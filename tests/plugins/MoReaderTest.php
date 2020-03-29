@@ -18,6 +18,9 @@ use \stdClass;
  */
 class MoReaderTest extends TestCase
 {
+    /**
+     * @var string
+     */
     public static $dir = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."data".DIRECTORY_SEPARATOR;
 
     /**
