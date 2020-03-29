@@ -90,32 +90,17 @@ class TranslationNode extends Node
             $compiler->write("// l10n: {$message}\n");
         }
         if ($vars) {
-            $compiler->write('echo strtr('.$function.'(')->subcompile($msg);
+            $compiler->write('echo strtr('.$function.'(');
+            if ($this->hasNode('context')) {
+                $context = trim($this->getNode('context')->getAttribute('data'));
+                $compiler->raw('"'.$context.'", ');
+            }
+            $compiler->subcompile($msg);
             if ($this->hasNode('plural')) {
                 $compiler->raw(', ')->subcompile($pMessage)->raw(', abs(')->subcompile($this->hasNode('count') ? $this->getNode('count') : null)->raw(')');
             }
             $compiler->raw('), [');
-            $lastKey = key(array_slice($vars, -1));
-            foreach ($vars as $key => $var) {
-                $attrName = $var->getAttribute('name');
-                if ($attrName === 'count') {
-                    $compiler->string('%count%')->raw(' => abs(');
-                    if ($this->hasNode('count')) {
-                        $compiler->subcompile($this->getNode('count'));
-                    }
-                    if ($key === $lastKey) {
-                        $compiler->raw(')');
-                    } else {
-                        $compiler->raw('), ');
-                    }
-                } else {
-                    if ($key === $lastKey) {
-                        $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var);
-                    } else {
-                        $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var)->raw(', ');
-                    }
-                }
-            }
+            $this->compileVarsArgs($compiler, $vars);
             $compiler->raw("]);\n");
         } else {
             $compiler->write('echo '.$function.'(');
@@ -128,6 +113,36 @@ class TranslationNode extends Node
                 $compiler->raw(', ')->subcompile($pMessage)->raw(', abs(')->subcompile($this->hasNode('count') ? $this->getNode('count') : null)->raw(')');
             }
             $compiler->raw(");\n");
+        }
+    }
+
+    /**
+     * @param Compiler         $compiler The template compiler
+     * @param NameExpression[] $vars     The variables
+     * @return void
+     */
+    public function compileVarsArgs(Compiler $compiler, array $vars): void
+    {
+        $lastKey = array_keys($vars)[count($vars) - 1] ?? null;
+        foreach ($vars as $key => $var) {
+            $attrName = $var->getAttribute('name');
+            if ($attrName === 'count') {
+                $compiler->string('%count%')->raw(' => abs(');
+                if ($this->hasNode('count')) {
+                    $compiler->subcompile($this->getNode('count'));
+                }
+                if ($key === $lastKey) {
+                    $compiler->raw(')');
+                } else {
+                    $compiler->raw('), ');
+                }
+            } else {
+                if ($key === $lastKey) {
+                    $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var);
+                } else {
+                    $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var)->raw(', ');
+                }
+            }
         }
     }
 
@@ -166,16 +181,6 @@ class TranslationNode extends Node
         }
 
         return [new Node([new ConstantExpression(trim($msg), $body->getTemplateLine())]), $vars];
-    }
-
-    /**
-     * @param bool $plural Return plural or singular function to use
-     *
-     * @return string
-     */
-    protected function getTransFunction($plural)
-    {
-        return $plural ? 'ngettext' : 'gettext';
     }
 
 }
