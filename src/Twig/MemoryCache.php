@@ -53,7 +53,7 @@ class MemoryCache implements CacheInterface
      */
     public function load($key)
     {
-
+        //load(string $key): void for twig 3.x
     }
 
     /**
