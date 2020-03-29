@@ -5,7 +5,7 @@
     "type": "library",
     "readme": "https://github.com/wdes/php-I18n-l10n/blob/master/README.md",
     "license": "MPL-2.0",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "support": {
         "email": "williamdes@wdes.fr",
         "issues": "https://github.com/wdes/php-I18n-l10n/issues",
@@ -22,17 +22,17 @@
     "archive": {
         "exclude": [
             "/tests",
-            "/scripts/ci",
+            "/scripts",
             "/.npmignore",
+            "/.github",
             "/.editorconfig",
             "/.gitmodules",
             "/CODEOWNERS",
             "/wdes-php-i18n-l10n-*.tar",
-            "/docs",
+            "/example",
             "/.gitignore",
             "/phpcs.xml",
             "/phpstan.neon",
-            "/.travis.yml",
             "/codecov.yml",
             "/.phpunit.result.cache"
         ]
