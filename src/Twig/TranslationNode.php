@@ -7,8 +7,8 @@ namespace Wdes\PIL\Twig;
 
 use \Twig\Node\Node;
 use \Twig\Node\Expression\AbstractExpression;
-use \Twig\Extensions\Node\TransNode;
 use \Twig\Compiler;
+use Wdes\PIL\Node\TransNode;
 
 /**
  * Translation node for Twig
@@ -90,7 +90,7 @@ class TranslationNode extends TransNode
                 $compiler->raw(', ')->subcompile($pMessage)->raw(', abs(')->subcompile($this->hasNode('count') ? $this->getNode('count') : null)->raw(')');
             }
             $compiler->raw('), [');
-            $lastKey = array_key_last($vars);
+            $lastKey = key(array_slice($vars, -1));
             foreach ($vars as $key => $var) {
                 $attrName = $var->getAttribute('name');
                 if ($attrName === 'count') {

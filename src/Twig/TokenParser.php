@@ -5,25 +5,29 @@ declare(strict_types = 1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 namespace Wdes\PIL\Twig;
 
-use \Twig\Token;
-use \Twig\Extensions\TokenParser\TransTokenParser;
-use \Twig\Extensions\Node\TransNode;
 use \Wdes\PIL\Twig\TranslationNode;
+use Twig\Error\SyntaxError;
+use Twig\Node\Expression\NameExpression;
+use Twig\Node\Node;
+use Twig\Node\PrintNode;
+use Twig\Node\TextNode;
+use Twig\Token;
+use Twig\TokenParser\AbstractTokenParser;
 
 /**
  * Token parser for Twig
  * @license MPL-2.0
  */
-class TokenParser extends TransTokenParser
+class TokenParser extends AbstractTokenParser
 {
 
     /**
      * Parses a token and returns a node.
      *
      * @param Token $token Twig token to parse
-     * @return TransNode
+     * @return TranslationNode
      */
-    public function parse(Token $token): TransNode
+    public function parse(Token $token)
     {
         $stream     = $this->parser->getStream();
         $pluralsNbr = null;
@@ -74,11 +78,44 @@ class TokenParser extends TransTokenParser
      * @param Token $token Twig Token instance
      * @return bool
      */
-    public function decideForFork(Token $token): bool
+    public function decideForFork(Token $token)
     {
         return $token->test(
             ['plural', 'context', 'notes', 'endtrans']
         );
+    }
+
+    /**
+     * @param Token $token The token to test
+     * @return bool
+     */
+    public function decideForEnd(Token $token)
+    {
+        return $token->test('endtrans');
+    }
+
+    /**
+     * @return string
+     */
+    public function getTag()
+    {
+        return 'trans';
+    }
+
+    /**
+     * @param Node $body   The body node
+     * @param int  $lineNo The line number
+     * @return void
+     */
+    protected function checkTransString(Node $body, $lineNo)
+    {
+        foreach ($body as $i => $node) {
+            if ($node instanceof TextNode || ($node instanceof PrintNode && $node->getNode('expr') instanceof NameExpression)) {
+                continue;
+            }
+
+            throw new SyntaxError(sprintf('The text to be translated with "trans" can only contain references to simple variables'), $lineNo);
+        }
     }
 
 }

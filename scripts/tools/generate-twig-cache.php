@@ -97,8 +97,8 @@ $description->to          = $options['title'];
 $mappings->replacements[] = $description;
 
 $year                     = new stdClass();
-$year->from               = "YEAR";
-$year->to                 = date("Y");//2018 -
+$year->from               = '# Copyright (C) YEAR';
+$year->to                 = '# Copyright (C) 2018-' . date('Y');
 $mappings->replacements[] = $year;
 
 $templates                = new stdClass();

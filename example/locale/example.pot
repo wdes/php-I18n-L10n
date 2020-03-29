@@ -1,5 +1,5 @@
 # Wdes example.
-# Copyright (C) 2019 William Desportes
+# Copyright (C) 2018-2020 William Desportes
 # This file is distributed under the license http://unlicense.org/UNLICENSE
 # William Desportes <williamdes@wdes.fr>
 #
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.0\n"
 "Report-Msgid-Bugs-To: williamdes@wdes.fr\n"
-"POT-Creation-Date: 2019-06-08 16:28+0200\n"
-"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2020-03-29 17:39+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
