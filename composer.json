@@ -22,17 +22,17 @@
     "archive": {
         "exclude": [
             "/tests",
-            "/scripts/ci",
+            "/scripts",
             "/.npmignore",
+            "/.github",
             "/.editorconfig",
             "/.gitmodules",
             "/CODEOWNERS",
             "/wdes-php-i18n-l10n-*.tar",
-            "/docs",
+            "/example",
             "/.gitignore",
             "/phpcs.xml",
             "/phpstan.neon",
-            "/.travis.yml",
             "/codecov.yml",
             "/.phpunit.result.cache"
         ]
