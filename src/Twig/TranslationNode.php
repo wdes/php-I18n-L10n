@@ -2,19 +2,25 @@
 declare(strict_types = 1);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 namespace Wdes\PIL\Twig;
 
-use \Twig\Node\Node;
-use \Twig\Node\Expression\AbstractExpression;
-use \Twig\Compiler;
-use Wdes\PIL\Node\TransNode;
+use Twig\Compiler;
+use Twig\Node\Expression\AbstractExpression;
+use Twig\Node\Expression\ConstantExpression;
+use Twig\Node\Expression\FilterExpression;
+use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\TempNameExpression;
+use Twig\Node\Node;
+use Twig\Node\PrintNode;
+use Twig\Node\SetTempNode;
 
 /**
  * Translation node for Twig
  * @license MPL-2.0
  */
-class TranslationNode extends TransNode
+class TranslationNode extends Node
 {
 
     /**
@@ -51,7 +57,7 @@ class TranslationNode extends TransNode
             $nodes['plural'] = $plural;
         }
 
-        Node::__construct($nodes, [], $lineno, $tag);
+        parent::__construct($nodes, [], $lineno, $tag);
     }
 
     /**
@@ -124,6 +130,57 @@ class TranslationNode extends TransNode
             }
             $compiler->raw(");\n");
         }
+    }
+
+    /**
+     * Compile a translation string
+     *
+     * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+     * @param Node $body A Node instance
+     *
+     * @return array
+     */
+    protected function compileString(Node $body)
+    {
+        if ($body instanceof NameExpression || $body instanceof ConstantExpression || $body instanceof TempNameExpression) {
+            return [$body, []];
+        }
+
+        $vars = [];
+        if (count($body)) {
+            $msg = '';
+
+            foreach ($body as $node) {
+                if (get_class($node) === Node::class && $node->getNode(0) instanceof SetTempNode) {
+                    $node = $node->getNode(1);
+                }
+
+                if ($node instanceof PrintNode) {
+                    $n = $node->getNode('expr');
+                    while ($n instanceof FilterExpression) {
+                        $n = $n->getNode('node');
+                    }
+                    $msg   .= sprintf('%%%s%%', $n->getAttribute('name'));
+                    $vars[] = new NameExpression($n->getAttribute('name'), $n->getTemplateLine());
+                } else {
+                    $msg .= $node->getAttribute('data');
+                }
+            }
+        } else {
+            $msg = $body->getAttribute('data');
+        }
+
+        return [new Node([new ConstantExpression(trim($msg), $body->getTemplateLine())]), $vars];
+    }
+
+    /**
+     * @param bool $plural Return plural or singular function to use
+     *
+     * @return string
+     */
+    protected function getTransFunction($plural)
+    {
+        return $plural ? 'ngettext' : 'gettext';
     }
 
 }
