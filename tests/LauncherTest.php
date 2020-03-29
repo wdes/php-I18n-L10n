@@ -4,7 +4,7 @@ declare(strict_types = 1);
  * public domain.
  * For more information, please refer to <http://unlicense.org/>
  */
-namespace Wdes\PIL;
+namespace Wdes\phpI18nL10n\Tests;
 
 use \PHPUnit\Framework\TestCase;
 use \Wdes\PIL\plugins\MoReader;

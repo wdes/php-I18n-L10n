@@ -4,7 +4,7 @@ declare(strict_types = 1);
  * public domain.
  * For more information, please refer to <http://unlicense.org/>
  */
-namespace Wdes\PIL\Twig\Extension;
+namespace Wdes\phpI18nL10n\Tests;
 
 use \PHPUnit\Framework\TestCase;
 use \Wdes\PIL\Twig\Extension\I18n as ExtensionI18n;
@@ -42,8 +42,7 @@ class I18nTest extends TestCase
      */
     public function setUp(): void
     {
-        $S       = DIRECTORY_SEPARATOR;
-        $dataDir = __DIR__.$S."..".$S."..".$S."data".$S;
+        $dataDir = __DIR__. DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
 
         $moReader = new MoReader(
             ["localeDir" => $dataDir]
@@ -235,6 +234,16 @@ class I18nTest extends TestCase
         $html = $template->render(["a" => ["1", "2"], "nbrdogs" => 3]);
         $this->assertEquals("One person", $html);
         $this->assertNotEmpty($html);
+    }
+
+    /**
+     * Test simple plural translation using count and vars
+     * @return void
+     */
+    public function testExtensionI18nGetName(): void
+    {
+        $extension = new ExtensionI18n();
+        $this->assertSame('i18n', $extension->getName());
     }
 
 }

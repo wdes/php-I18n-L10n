@@ -60,7 +60,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Wdes\\PIL\\": "tests/"
+            "Wdes\\phpI18nL10n\\Tests\\": "tests/"
         }
     },
     "require": {

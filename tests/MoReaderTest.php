@@ -4,7 +4,7 @@ declare(strict_types = 1);
  * public domain.
  * For more information, please refer to <http://unlicense.org/>
  */
-namespace Wdes\PIL\plugins;
+namespace Wdes\phpI18nL10n\Tests;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +21,7 @@ class MoReaderTest extends TestCase
     /**
      * @var string
      */
-    public static $dir = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."data".DIRECTORY_SEPARATOR;
+    public static $dir = __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
 
     /**
      * test Instance
