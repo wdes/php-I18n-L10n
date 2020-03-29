@@ -1,0 +1,8 @@
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.github export-ignore
+/example export-ignore
+/scripts export-ignore
+/phpcs.xml export-ignore
+/phpstan.neon export-ignore
+/codecov.yml export-ignore

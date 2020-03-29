@@ -4,7 +4,7 @@ declare(strict_types = 1);
  * public domain.
  * For more information, please refer to <http://unlicense.org/>
  */
-namespace Wdes\PIL\Twig\Extension;
+namespace Wdes\phpI18nL10n\Tests;
 
 use \PHPUnit\Framework\TestCase;
 use \Wdes\PIL\Twig\Extension\I18n as ExtensionI18n;
@@ -15,7 +15,6 @@ use \Wdes\PIL\Launcher;
 use \Wdes\PIL\Twig\MemoryCache;
 
 /**
- * Test class for Utils
  * @author William Desportes <williamdes@wdes.fr>
  * @license Unlicense
  */
@@ -42,8 +41,7 @@ class I18nTest extends TestCase
      */
     public function setUp(): void
     {
-        $S       = DIRECTORY_SEPARATOR;
-        $dataDir = __DIR__.$S."..".$S."..".$S."data".$S;
+        $dataDir = __DIR__. DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
 
         $moReader = new MoReader(
             ["localeDir" => $dataDir]
@@ -73,7 +71,7 @@ class I18nTest extends TestCase
             '{% trans "Translate this" %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo \Wdes\PIL\Launcher::getPlugin()->gettext("Translate this");',
             $generatedCode
         );
@@ -92,11 +90,11 @@ class I18nTest extends TestCase
             '{% trans %}Translate this{% notes %}And note{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo \Wdes\PIL\Launcher::getPlugin()->gettext("Translate this");',
             $generatedCode
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '// l10n: And note',
             $generatedCode
         );
@@ -116,12 +114,62 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo \Wdes\PIL\Launcher::getPlugin()->pgettext("NayanCat", "Translate this");',
             $generatedCode
         );
         $html = $template->render([]);
         $this->assertEquals("Traduis ça", $html);
+        $this->assertNotEmpty($html);
+    }
+
+    /**
+     * Test simple translation with context and a variable
+     * @return void
+     */
+    public function testSimpleTranslationWithContextAndVariable(): void
+    {
+        $template      = $this->twig->createTemplate(
+            '{% trans %}Translate this {{name}} {% context %}The user name{% endtrans %}'
+        );
+        $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
+
+        $this->assertStringContainsString(
+            'echo strtr(\Wdes\PIL\Launcher::getPlugin()->pgettext("The user name", "Translate this %name%"), ["%name%" => ($context["name"] ?? null)]);',
+            $generatedCode
+        );
+        $html = $template->render(
+            [
+            'name' => 'williamdes',
+            ]
+        );
+        $this->assertEquals('Translate this williamdes', $html);
+        $this->assertNotEmpty($html);
+    }
+
+    /**
+     * Test simple translation with context and some variables
+     * @return void
+     */
+    public function testSimpleTranslationWithContextAndVariables(): void
+    {
+        $template      = $this->twig->createTemplate(
+            '{% trans %}Translate this {{key}}: {{value}} {% context %}The user name{% endtrans %}'
+        );
+        $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
+
+        $this->assertStringContainsString(
+            'echo strtr(\Wdes\PIL\Launcher::getPlugin()->pgettext("The user name", "Translate this %key%: %value%"), '
+            . '["%key%" => ($context["key"] ?? null), "%value%" => ($context["value"] ?? null)]);',
+            $generatedCode
+        );
+        $html = $template->render(
+            [
+            'key' => 'user',
+            'value' => 'williamdes',
+            ]
+        );
+        $this->assertEquals('Translate this user: williamdes', $html);
         $this->assertNotEmpty($html);
     }
 
@@ -135,7 +183,7 @@ class I18nTest extends TestCase
             '{% trans %}One person{% plural nbr_persons %}{{ nbr }} persons{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo strtr(\Wdes\PIL\Launcher::getPlugin()->ngettext("One person"'.
             ', "%nbr% persons", abs(($context["nbr_persons"] ?? null))),'.
             ' ["%nbr%" => ($context["nbr"] ?? null)]);',
@@ -156,14 +204,14 @@ class I18nTest extends TestCase
             '{% trans %}one user likes this.{% plural nbr_persons %}{{ nbr }} users likes this.{% notes %}Number of users{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo strtr(\Wdes\PIL\Launcher::getPlugin()->ngettext('.
             '"one user likes this.", "%nbr% users likes this.",'.
             ' abs(($context["nbr_persons"] ?? null))),'.
             ' ["%nbr%" => ($context["nbr"] ?? null)]);',
             $generatedCode
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '// l10n: Number of users',
             $generatedCode
         );
@@ -182,7 +230,7 @@ class I18nTest extends TestCase
             '{% trans %}One person{% plural a %}persons{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo \Wdes\PIL\Launcher::getPlugin()->ngettext("One person", "persons", abs(($context["a"] ?? null)));',
             $generatedCode
         );
@@ -203,7 +251,7 @@ class I18nTest extends TestCase
             '{% trans %}One person{% plural a.count %}persons{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo \Wdes\PIL\Launcher::getPlugin()->ngettext("One person",'.
             ' "persons", abs(twig_get_attribute($this->env, $this->source,'.
             ' ($context["a"] ?? null), "count", [], "any", false, false, false, 1)));',
@@ -224,7 +272,7 @@ class I18nTest extends TestCase
             '{% trans %}One person{% plural a.count %}persons and {{ count }} dogs{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo strtr(\Wdes\PIL\Launcher::getPlugin()->ngettext("One person",'.
             ' "persons and %count% dogs", abs(twig_get_attribute($this->env,'.
             ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1))),'.
@@ -235,6 +283,16 @@ class I18nTest extends TestCase
         $html = $template->render(["a" => ["1", "2"], "nbrdogs" => 3]);
         $this->assertEquals("One person", $html);
         $this->assertNotEmpty($html);
+    }
+
+    /**
+     * Test simple plural translation using count and vars
+     * @return void
+     */
+    public function testExtensionI18nGetName(): void
+    {
+        $extension = new ExtensionI18n();
+        $this->assertSame('i18n', $extension->getName());
     }
 
 }

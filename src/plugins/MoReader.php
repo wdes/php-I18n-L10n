@@ -56,7 +56,10 @@ class MoReader extends BasePlugin
     public function readFile(string $file): stdClass
     {
         $this->data = new stdClass();
-        $res        = fopen($file, 'rb');
+        if (! is_file($file)) {
+            throw new Exception($file . ' does not exist.');
+        }
+        $res = fopen($file, 'rb');
         if (is_resource($res)) {
             $this->fileRes = $res;
         } else {

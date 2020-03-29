@@ -2,19 +2,24 @@
 declare(strict_types = 1);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 namespace Wdes\PIL\Twig;
 
-use \Twig\Node\Node;
-use \Twig\Node\Expression\AbstractExpression;
-use \Twig\Extensions\Node\TransNode;
-use \Twig\Compiler;
+use Twig\Compiler;
+use Twig\Node\Expression\AbstractExpression;
+use Twig\Node\Expression\ConstantExpression;
+use Twig\Node\Expression\FilterExpression;
+use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\TempNameExpression;
+use Twig\Node\Node;
+use Twig\Node\PrintNode;
 
 /**
  * Translation node for Twig
  * @license MPL-2.0
  */
-class TranslationNode extends TransNode
+class TranslationNode extends Node
 {
 
     /**
@@ -51,7 +56,7 @@ class TranslationNode extends TransNode
             $nodes['plural'] = $plural;
         }
 
-        Node::__construct($nodes, [], $lineno, $tag);
+        parent::__construct($nodes, [], $lineno, $tag);
     }
 
     /**
@@ -85,32 +90,17 @@ class TranslationNode extends TransNode
             $compiler->write("// l10n: {$message}\n");
         }
         if ($vars) {
-            $compiler->write('echo strtr('.$function.'(')->subcompile($msg);
+            $compiler->write('echo strtr('.$function.'(');
+            if ($this->hasNode('context')) {
+                $context = trim($this->getNode('context')->getAttribute('data'));
+                $compiler->raw('"'.$context.'", ');
+            }
+            $compiler->subcompile($msg);
             if ($this->hasNode('plural')) {
                 $compiler->raw(', ')->subcompile($pMessage)->raw(', abs(')->subcompile($this->hasNode('count') ? $this->getNode('count') : null)->raw(')');
             }
             $compiler->raw('), [');
-            $lastKey = array_key_last($vars);
-            foreach ($vars as $key => $var) {
-                $attrName = $var->getAttribute('name');
-                if ($attrName === 'count') {
-                    $compiler->string('%count%')->raw(' => abs(');
-                    if ($this->hasNode('count')) {
-                        $compiler->subcompile($this->getNode('count'));
-                    }
-                    if ($key === $lastKey) {
-                        $compiler->raw(')');
-                    } else {
-                        $compiler->raw('), ');
-                    }
-                } else {
-                    if ($key === $lastKey) {
-                        $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var);
-                    } else {
-                        $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var)->raw(', ');
-                    }
-                }
-            }
+            $this->compileVarsArgs($compiler, $vars);
             $compiler->raw("]);\n");
         } else {
             $compiler->write('echo '.$function.'(');
@@ -124,6 +114,73 @@ class TranslationNode extends TransNode
             }
             $compiler->raw(");\n");
         }
+    }
+
+    /**
+     * @param Compiler         $compiler The template compiler
+     * @param NameExpression[] $vars     The variables
+     * @return void
+     */
+    public function compileVarsArgs(Compiler $compiler, array $vars): void
+    {
+        $lastKey = array_keys($vars)[count($vars) - 1] ?? null;
+        foreach ($vars as $key => $var) {
+            $attrName = $var->getAttribute('name');
+            if ($attrName === 'count') {
+                $compiler->string('%count%')->raw(' => abs(');
+                if ($this->hasNode('count')) {
+                    $compiler->subcompile($this->getNode('count'));
+                }
+                if ($key === $lastKey) {
+                    $compiler->raw(')');
+                } else {
+                    $compiler->raw('), ');
+                }
+            } else {
+                if ($key === $lastKey) {
+                    $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var);
+                } else {
+                    $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var)->raw(', ');
+                }
+            }
+        }
+    }
+
+    /**
+     * Compile a translation string
+     *
+     * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+     * @param Node $body A Node instance
+     *
+     * @return array
+     */
+    protected function compileString(Node $body)
+    {
+        if ($body instanceof NameExpression || $body instanceof ConstantExpression || $body instanceof TempNameExpression) {
+            return [$body, []];
+        }
+
+        $vars = [];
+        if (count($body)) {
+            $msg = '';
+
+            foreach ($body as $node) {
+                if ($node instanceof PrintNode) {
+                    $n = $node->getNode('expr');
+                    while ($n instanceof FilterExpression) {
+                        $n = $n->getNode('node');
+                    }
+                    $msg   .= sprintf('%%%s%%', $n->getAttribute('name'));
+                    $vars[] = new NameExpression($n->getAttribute('name'), $n->getTemplateLine());
+                } else {
+                    $msg .= $node->getAttribute('data');
+                }
+            }
+        } else {
+            $msg = $body->getAttribute('data');
+        }
+
+        return [new Node([new ConstantExpression(trim($msg), $body->getTemplateLine())]), $vars];
     }
 
 }
