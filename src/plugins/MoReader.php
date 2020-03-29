@@ -59,7 +59,7 @@ class MoReader extends BasePlugin
         if (! is_file($file)) {
             throw new Exception($file . ' does not exist.');
         }
-        $res        = fopen($file, 'rb');
+        $res = fopen($file, 'rb');
         if (is_resource($res)) {
             $this->fileRes = $res;
         } else {

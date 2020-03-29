@@ -107,4 +107,5 @@ class MoReaderTest extends TestCase
         $this->assertSame('Traduis ça', $moReader->ngettext('Translate this', 'Translate this', 2));
         $this->assertSame('Traduis ça', $moReader->dgettext('', 'Translate this'));
     }
+
 }
