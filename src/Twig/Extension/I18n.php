@@ -5,15 +5,15 @@ declare(strict_types = 1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 namespace Wdes\PIL\Twig\Extension;
 
-use \Wdes\PIL\Twig\TokenParser;
-use \Twig\TwigFilter;
-use \Twig\Extensions\I18nExtension;
+use Wdes\PIL\Twig\TokenParser;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 /**
  * I18n extension for Twig
  * @license MPL-2.0
  */
-class I18n extends I18nExtension
+class I18n extends AbstractExtension
 {
 
     /**
@@ -42,4 +42,11 @@ class I18n extends I18nExtension
         ];
     }
 
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'i18n';
+    }
 }

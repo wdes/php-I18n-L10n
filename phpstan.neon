@@ -1,4 +1,5 @@
 parameters:
 	bootstrap: %rootDir%/../../../src/bootstrap.php
-	ignoreErrors:
-	- '#Wdes\\PIL\\Twig\\TranslationNode\:\:__construct\(\) does not call parent constructor from Twig_Extensions_Node_Trans.#'
+	checkMissingIterableValueType: false
+	excludes_analyse:
+		- src/Node/TransNode.php

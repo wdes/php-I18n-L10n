@@ -7,8 +7,8 @@ namespace Wdes\PIL\Twig;
 
 use \Twig\Node\Node;
 use \Twig\Node\Expression\AbstractExpression;
-use \Twig\Extensions\Node\TransNode;
 use \Twig\Compiler;
+use Wdes\PIL\Node\TransNode;
 
 /**
  * Translation node for Twig
