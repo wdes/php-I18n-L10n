@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 // Can be removed :)
 
-require_once(__DIR__ . '/../vendor/autoload.php');
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use \Wdes\PIL\plugins\MoReader;
 use \Wdes\PIL\Launcher;
@@ -12,9 +12,9 @@ use \Twig\Loader\FilesystemLoader as TwigLoaderFilesystem;
 
 $dataDir  = __DIR__ . '/locale/';
 $moReader = new MoReader(
-    ["localeDir" => $dataDir]
+    ['localeDir' => $dataDir]
 );
-$moReader->readFile($dataDir . "fr.mo"); // Load the file you want (a sepecific language for example)
+$moReader->readFile($dataDir . 'fr.mo'); // Load the file you want (a sepecific language for example)
 Launcher::$plugin = $moReader;
 
 $loader = new TwigLoaderFilesystem([ __DIR__ . '/templates/' ]); // Load all templates from the dir
