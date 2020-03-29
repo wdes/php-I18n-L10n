@@ -55,7 +55,7 @@ class MoReaderTest extends TestCase
     }
 
     /**
-     * test get Database
+     * test read file
      * @depends testInstance
      * @param MoReader $moReader Config instance
      * @return void
@@ -76,4 +76,35 @@ class MoReaderTest extends TestCase
         //echo \json_encode($data, JSON_PRETTY_PRINT);
     }
 
+    /**
+     * test read invalid file
+     * @depends testInstance
+     * @param MoReader $moReader Config instance
+     * @return void
+     */
+    public function testReadInvalidFile(MoReader $moReader): void
+    {
+        $fileName = self::$dir . 'account-manager-ru.mo';
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage($fileName . ' does not exist.');
+        $this->expectExceptionCode(0);
+        $moReader->readFile($fileName);
+    }
+
+    /**
+     * test translate
+     * @depends testInstance
+     * @param MoReader $moReader Config instance
+     * @return void
+     */
+    public function testTranslate(MoReader $moReader): void
+    {
+        $data = $moReader->readFile(self::$dir . 'abc.mo');
+        $this->assertInstanceOf(stdClass::class, $data);
+        $this->assertSame('Traduis ça', $moReader->__('Translate this'));
+        $this->assertSame('Traduis ça', $moReader->dnpgettext('', '', 'Translate this', '', 0));
+        $this->assertSame('Traduis ça', $moReader->ngettext('Translate this', 'Translate this', 1));
+        $this->assertSame('Traduis ça', $moReader->ngettext('Translate this', 'Translate this', 2));
+        $this->assertSame('Traduis ça', $moReader->dgettext('', 'Translate this'));
+    }
 }
