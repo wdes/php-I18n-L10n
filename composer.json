@@ -55,7 +55,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Wdes\\PIL\\": "src/"
+            "Wdes\\phpI18nL10n\\": "src/"
         }
     },
     "autoload-dev": {

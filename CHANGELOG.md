@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Upgraded squizlabs/php_codesniffer from 3.3.x to 3.5.x
 - Upgraded phpstan/phpstan from 0.11.8+ to 0.12+
+- BREAKING CHANGE rename namespace to Wdes\phpI18nL10n
 
 ### Fixed
 - Test phpunit suite

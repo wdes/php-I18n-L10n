@@ -7,8 +7,8 @@ declare(strict_types = 1);
 namespace Wdes\phpI18nL10n\Tests;
 
 use \PHPUnit\Framework\TestCase;
-use \Wdes\PIL\plugins\MoReader;
-use \Wdes\PIL\Launcher;
+use Wdes\phpI18nL10n\plugins\MoReader;
+use Wdes\phpI18nL10n\Launcher;
 
 /**
  * Test class for Utils

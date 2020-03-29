@@ -52,7 +52,7 @@ if (empty($options['package-version'])) {
 
 require_once(__DIR__ . '/../../vendor/autoload.php');
 
-use \Wdes\PIL\Twig\Extension\I18n as ExtensionI18n;
+use \Wdes\phpI18nL10n\Twig\Extension\I18n as ExtensionI18n;
 use \Twig\Cache\FilesystemCache;
 use \Twig\Environment as TwigEnvironment;
 use \Twig\Loader\FilesystemLoader as TwigLoaderFilesystem;

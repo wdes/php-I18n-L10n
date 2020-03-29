@@ -8,7 +8,7 @@ namespace Wdes\phpI18nL10n\Tests;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use Wdes\PIL\plugins\MoReader;
+use Wdes\phpI18nL10n\plugins\MoReader;
 use \stdClass;
 
 /**
