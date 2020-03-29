@@ -12,7 +12,6 @@ use Wdes\PIL\plugins\MoReader;
 use \stdClass;
 
 /**
- * Test class for MoReader
  * @author William Desportes <williamdes@wdes.fr>
  * @license Unlicense
  */
@@ -106,6 +105,7 @@ class MoReaderTest extends TestCase
         $this->assertSame('Traduis ça', $moReader->ngettext('Translate this', 'Translate this', 1));
         $this->assertSame('Traduis ça', $moReader->ngettext('Translate this', 'Translate this', 2));
         $this->assertSame('Traduis ça', $moReader->dngettext('Translate this', 'Translate this', 'Translate this', 2));
+        $this->assertSame('Traduis ça', $moReader->npgettext('Translate this', 'Translate this', 'Translate this', 1));
         $this->assertSame('Traduis ça', $moReader->npgettext('Translate this', 'Translate this', 'Translate this', 2));
         $this->assertSame('Traduis ça', $moReader->dgettext('', 'Translate this'));
         $this->assertSame('Traduis ça', $moReader->dpgettext('', '', 'Translate this'));

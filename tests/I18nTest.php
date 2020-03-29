@@ -15,7 +15,6 @@ use \Wdes\PIL\Launcher;
 use \Wdes\PIL\Twig\MemoryCache;
 
 /**
- * Test class for Utils
  * @author William Desportes <williamdes@wdes.fr>
  * @license Unlicense
  */
@@ -121,6 +120,56 @@ class I18nTest extends TestCase
         );
         $html = $template->render([]);
         $this->assertEquals("Traduis ça", $html);
+        $this->assertNotEmpty($html);
+    }
+
+    /**
+     * Test simple translation with context and a variable
+     * @return void
+     */
+    public function testSimpleTranslationWithContextAndVariable(): void
+    {
+        $template      = $this->twig->createTemplate(
+            '{% trans %}Translate this {{name}} {% context %}The user name{% endtrans %}'
+        );
+        $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
+
+        $this->assertStringContainsString(
+            'echo strtr(\Wdes\PIL\Launcher::getPlugin()->pgettext("The user name", "Translate this %name%"), ["%name%" => ($context["name"] ?? null)]);',
+            $generatedCode
+        );
+        $html = $template->render(
+            [
+            'name' => 'williamdes',
+            ]
+        );
+        $this->assertEquals('Translate this williamdes', $html);
+        $this->assertNotEmpty($html);
+    }
+
+    /**
+     * Test simple translation with context and some variables
+     * @return void
+     */
+    public function testSimpleTranslationWithContextAndVariables(): void
+    {
+        $template      = $this->twig->createTemplate(
+            '{% trans %}Translate this {{key}}: {{value}} {% context %}The user name{% endtrans %}'
+        );
+        $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
+
+        $this->assertStringContainsString(
+            'echo strtr(\Wdes\PIL\Launcher::getPlugin()->pgettext("The user name", "Translate this %key%: %value%"), '
+            . '["%key%" => ($context["key"] ?? null), "%value%" => ($context["value"] ?? null)]);',
+            $generatedCode
+        );
+        $html = $template->render(
+            [
+            'key' => 'user',
+            'value' => 'williamdes',
+            ]
+        );
+        $this->assertEquals('Translate this user: williamdes', $html);
         $this->assertNotEmpty($html);
     }
 
