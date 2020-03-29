@@ -86,6 +86,7 @@ class TokenParser extends AbstractTokenParser
     }
 
     /**
+     * @param Token $token The token to test
      * @return bool
      */
     public function decideForEnd(Token $token)
@@ -94,7 +95,7 @@ class TokenParser extends AbstractTokenParser
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getTag()
     {
@@ -102,23 +103,19 @@ class TokenParser extends AbstractTokenParser
     }
 
     /**
-     * @param Node $body
-     * @param int $lineNo
+     * @param Node $body   The body node
+     * @param int  $lineNo The line number
      * @return void
-     * @throws SyntaxError
      */
     protected function checkTransString(Node $body, $lineNo)
     {
         foreach ($body as $i => $node) {
-            if (
-                $node instanceof TextNode
-                ||
-                ($node instanceof PrintNode && $node->getNode('expr') instanceof NameExpression)
-            ) {
+            if ($node instanceof TextNode || ($node instanceof PrintNode && $node->getNode('expr') instanceof NameExpression)) {
                 continue;
             }
 
             throw new SyntaxError(sprintf('The text to be translated with "trans" can only contain references to simple variables'), $lineNo);
         }
     }
+
 }

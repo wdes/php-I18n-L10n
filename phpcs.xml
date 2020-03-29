@@ -11,6 +11,7 @@
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/build/*</exclude-pattern>
     <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/src/Node/TransNode.php</exclude-pattern>
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
     <rule ref="SlevomatCodingStandard.Namespaces.MultipleUsesPerLine"/>

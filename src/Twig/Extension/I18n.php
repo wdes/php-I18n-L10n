@@ -49,4 +49,5 @@ class I18n extends AbstractExtension
     {
         return 'i18n';
     }
+
 }

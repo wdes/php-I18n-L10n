@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types = 1);
 /*
  * This file is part of Twig.
  *
@@ -29,6 +29,7 @@ use Twig\Node\SetTempNode;
  */
 class TransNode extends Node
 {
+
     public function __construct(Node $body, Node $plural = null, AbstractExpression $count = null, Node $notes = null, $lineno, $tag = null)
     {
         $nodes = array('body' => $body);
@@ -174,4 +175,5 @@ class TransNode extends Node
     {
         return $plural ? 'ngettext' : 'gettext';
     }
+
 }
