@@ -15,7 +15,7 @@
         "phpcs": "phpcs --standard=phpcs.xml --no-cache --colors -p -n",
         "phpcbf": "phpcbf --standard=phpcs.xml",
         "phpstan": "phpstan analyse src tests --configuration=phpstan.neon --level=max",
-        "phpunit": "phpunit --configuration ./tests/phpunit.xml",
+        "phpunit": "phpunit",
         "update:example": "./scripts/update-example.sh"
     },
     "non-feature-branches": ["dev"],
