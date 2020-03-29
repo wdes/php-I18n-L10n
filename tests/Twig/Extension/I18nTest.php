@@ -73,7 +73,7 @@ class I18nTest extends TestCase
             '{% trans "Translate this" %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo \Wdes\PIL\Launcher::getPlugin()->gettext("Translate this");',
             $generatedCode
         );
@@ -92,11 +92,11 @@ class I18nTest extends TestCase
             '{% trans %}Translate this{% notes %}And note{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo \Wdes\PIL\Launcher::getPlugin()->gettext("Translate this");',
             $generatedCode
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '// l10n: And note',
             $generatedCode
         );
@@ -116,7 +116,7 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo \Wdes\PIL\Launcher::getPlugin()->pgettext("NayanCat", "Translate this");',
             $generatedCode
         );
@@ -135,7 +135,7 @@ class I18nTest extends TestCase
             '{% trans %}One person{% plural nbr_persons %}{{ nbr }} persons{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo strtr(\Wdes\PIL\Launcher::getPlugin()->ngettext("One person"'.
             ', "%nbr% persons", abs(($context["nbr_persons"] ?? null))),'.
             ' ["%nbr%" => ($context["nbr"] ?? null)]);',
@@ -156,14 +156,14 @@ class I18nTest extends TestCase
             '{% trans %}one user likes this.{% plural nbr_persons %}{{ nbr }} users likes this.{% notes %}Number of users{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo strtr(\Wdes\PIL\Launcher::getPlugin()->ngettext('.
             '"one user likes this.", "%nbr% users likes this.",'.
             ' abs(($context["nbr_persons"] ?? null))),'.
             ' ["%nbr%" => ($context["nbr"] ?? null)]);',
             $generatedCode
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '// l10n: Number of users',
             $generatedCode
         );
@@ -182,7 +182,7 @@ class I18nTest extends TestCase
             '{% trans %}One person{% plural a %}persons{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo \Wdes\PIL\Launcher::getPlugin()->ngettext("One person", "persons", abs(($context["a"] ?? null)));',
             $generatedCode
         );
@@ -203,7 +203,7 @@ class I18nTest extends TestCase
             '{% trans %}One person{% plural a.count %}persons{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo \Wdes\PIL\Launcher::getPlugin()->ngettext("One person",'.
             ' "persons", abs(twig_get_attribute($this->env, $this->source,'.
             ' ($context["a"] ?? null), "count", [], "any", false, false, false, 1)));',
@@ -224,7 +224,7 @@ class I18nTest extends TestCase
             '{% trans %}One person{% plural a.count %}persons and {{ count }} dogs{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'echo strtr(\Wdes\PIL\Launcher::getPlugin()->ngettext("One person",'.
             ' "persons and %count% dogs", abs(twig_get_attribute($this->env,'.
             ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1))),'.
