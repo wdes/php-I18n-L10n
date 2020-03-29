@@ -14,7 +14,6 @@ use Twig\Node\Expression\NameExpression;
 use Twig\Node\Expression\TempNameExpression;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
-use Twig\Node\SetTempNode;
 
 /**
  * Translation node for Twig
@@ -151,10 +150,6 @@ class TranslationNode extends Node
             $msg = '';
 
             foreach ($body as $node) {
-                if (get_class($node) === Node::class && $node->getNode(0) instanceof SetTempNode) {
-                    $node = $node->getNode(1);
-                }
-
                 if ($node instanceof PrintNode) {
                     $n = $node->getNode('expr');
                     while ($n instanceof FilterExpression) {
