@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add support for phpunit 8 and 9
 - Add a .gitattributes file
+- Improved code coverage
 
 ### Changed
 - Upgraded squizlabs/php_codesniffer from 3.3.x to 3.5.x
@@ -17,7 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Test phpunit suite
 - .editorconfig for *.neon files
 
-
 ### Removed
 - twig/extensions dependency
 - TravisCI setup
@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - example from dist version
 - Utils class
 - CI scripts
-
+- Some useless files
 
 ## [v1.0.0] - 2019-06-08
 ### Added
