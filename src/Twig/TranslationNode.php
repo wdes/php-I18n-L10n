@@ -90,7 +90,7 @@ class TranslationNode extends TransNode
                 $compiler->raw(', ')->subcompile($pMessage)->raw(', abs(')->subcompile($this->hasNode('count') ? $this->getNode('count') : null)->raw(')');
             }
             $compiler->raw('), [');
-            $lastKey = array_key_last($vars);
+            $lastKey = key(array_slice($vars, -1));
             foreach ($vars as $key => $var) {
                 $attrName = $var->getAttribute('name');
                 if ($attrName === 'count') {
