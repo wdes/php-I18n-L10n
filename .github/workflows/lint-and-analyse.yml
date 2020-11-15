@@ -12,8 +12,7 @@ jobs:
               with:
                   path: ~/.composer/cache/
                   key: composer-cache
-            - name: Install dependencies
-              run: composer install --no-interaction --prefer-dist --no-progress --no-suggest
+            - uses: php-actions/composer@v4
             - name: Lint files
               run: composer run phpcs
 
@@ -26,7 +25,6 @@ jobs:
               with:
                   path: ~/.composer/cache/
                   key: composer-cache
-            - name: Install dependencies
-              run: composer install --no-interaction --prefer-dist --no-progress --no-suggest
+            - uses: php-actions/composer@v4
             - name: Lint files
               run: composer run phpstan
