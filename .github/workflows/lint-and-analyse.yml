@@ -13,6 +13,9 @@ jobs:
                   path: ~/.composer/cache/
                   key: composer-cache
             - uses: php-actions/composer@v4
+              with:
+                  php_version: latest
+                  composer_version: 2
             - name: Lint files
               run: composer run phpcs
 
@@ -26,5 +29,8 @@ jobs:
                   path: ~/.composer/cache/
                   key: composer-cache
             - uses: php-actions/composer@v4
+              with:
+                  php_version: latest
+                  composer_version: 2
             - name: Lint files
               run: composer run phpstan
