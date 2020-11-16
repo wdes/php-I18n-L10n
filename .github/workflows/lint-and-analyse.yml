@@ -12,10 +12,11 @@ jobs:
               with:
                   path: ~/.composer/cache/
                   key: composer-cache
-            - uses: php-actions/composer@v4
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
               with:
-                  php_version: latest
-                  composer_version: 2
+                  php-version: 7.4
+                  tools: composer:v2
             - name: Lint files
               run: composer run phpcs
 
@@ -28,9 +29,10 @@ jobs:
               with:
                   path: ~/.composer/cache/
                   key: composer-cache
-            - uses: php-actions/composer@v4
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
               with:
-                  php_version: latest
-                  composer_version: 2
+                  php-version: 7.4
+                  tools: composer:v2
             - name: Lint files
               run: composer run phpstan
