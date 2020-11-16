@@ -13,11 +13,11 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Use php ${{ matrix.php-version }}
-              uses: shivammathur/setup-php@v1
+              uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-version }}
                   coverage: xdebug
-                  extension: mbstring
+                  extensions: mbstring
             - name: Cache module
               uses: actions/cache@v1.1.2
               with:

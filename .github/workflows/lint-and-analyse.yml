@@ -17,6 +17,8 @@ jobs:
               with:
                   php-version: 7.4
                   tools: composer:v2
+            - name: Install dependencies
+              run: composer install --no-interaction --prefer-dist --no-progress --no-suggest
             - name: Lint files
               run: composer run phpcs
 
@@ -34,5 +36,7 @@ jobs:
               with:
                   php-version: 7.4
                   tools: composer:v2
+            - name: Install dependencies
+              run: composer install --no-interaction --prefer-dist --no-progress --no-suggest
             - name: Lint files
               run: composer run phpstan
