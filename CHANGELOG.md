@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.1.0] - 2020-12-01
+
+- Add support for PHP 8.0
+
 ## [v2.0.0] - 2020-03-30
 ### Added
 - Add support for phpunit 8 and 9
