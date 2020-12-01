@@ -19,24 +19,6 @@
         "update:example": "./scripts/update-example.sh"
     },
     "non-feature-branches": ["dev"],
-    "archive": {
-        "exclude": [
-            "/tests",
-            "/scripts",
-            "/.npmignore",
-            "/.github",
-            "/.editorconfig",
-            "/.gitmodules",
-            "/CODEOWNERS",
-            "/wdes-php-i18n-l10n-*.tar",
-            "/example",
-            "/.gitignore",
-            "/phpcs.xml",
-            "/phpstan.neon",
-            "/codecov.yml",
-            "/.phpunit.result.cache"
-        ]
-    },
     "keywords": [
         "i18n",
         "l10n",
