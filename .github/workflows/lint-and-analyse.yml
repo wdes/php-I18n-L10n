@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
     lint-php:
-        runs-on: [self-hosted, ubuntu-latest]
+        runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
             - name: Cache module
@@ -23,7 +23,7 @@ jobs:
               run: composer run phpcs
 
     analyse-php:
-        runs-on: [self-hosted, ubuntu-latest]
+        runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
             - name: Cache module
