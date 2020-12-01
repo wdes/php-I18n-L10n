@@ -1,2 +1,9 @@
 parameters:
-	checkMissingIterableValueType: false
+        checkMissingIterableValueType: false
+        level: max
+        excludes_analyse:
+            - vendor/*
+        paths:
+            - src/
+            - example/
+            - tests/

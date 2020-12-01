@@ -14,7 +14,7 @@
     "scripts": {
         "phpcs": "phpcs --standard=phpcs.xml --no-cache --colors -p -n",
         "phpcbf": "phpcbf --standard=phpcs.xml",
-        "phpstan": "phpstan analyse src tests --configuration=phpstan.neon --level=max",
+        "phpstan": "phpstan analyse",
         "phpunit": "phpunit",
         "update:example": "./scripts/update-example.sh"
     },
