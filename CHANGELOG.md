@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support Twig 3
 - Drop PHP 7.1
 - Require PHP `>=` `7.2.9`
+- Add `Launcher::setPlugin($moReader);`
+- Remove direct access to `Launcher::$plugin`
+- Apply `wdes/coding-standard`
 
 ## [v2.1.0] - 2020-12-01
 
