@@ -1,13 +1,16 @@
 #!/usr/bin/env php
 <?php
-declare(strict_types = 1);
+
 /**
  * @license http://unlicense.org/UNLICENSE The UNLICENSE
  * @author William Desportes <williamdes@wdes.fr>
  */
 
+declare(strict_types = 1);
+
 $options = getopt(
-    '', [
+    '',
+    [
         'twig-cache-dir:',
         'twig-templates-dir:',
         'twig-templates-po-files:',
@@ -52,10 +55,10 @@ if (empty($options['package-version'])) {
 
 require_once(__DIR__ . '/../../vendor/autoload.php');
 
-use \Wdes\phpI18nL10n\Twig\Extension\I18n as ExtensionI18n;
-use \Twig\Cache\FilesystemCache;
-use \Twig\Environment as TwigEnvironment;
-use \Twig\Loader\FilesystemLoader as TwigLoaderFilesystem;
+use Wdes\phpI18nL10n\Twig\Extension\I18n as ExtensionI18n;
+use Twig\Cache\FilesystemCache;
+use Twig\Environment as TwigEnvironment;
+use Twig\Loader\FilesystemLoader as TwigLoaderFilesystem;
 
 $shortTempDir = $options['twig-templates-po-files'];
 $jsonMaping   = $options['json-mapping'];
@@ -64,7 +67,8 @@ $templateDir  = realpath($options['twig-templates-dir']) . DIRECTORY_SEPARATOR;
 $loader = new TwigLoaderFilesystem([ $templateDir ]); // Load all templates from the dir
 $cache  = new FilesystemCache($options['twig-cache-dir']);
 $twig   = new TwigEnvironment(
-    $loader, [
+    $loader,
+    [
     'cache' => $cache
     ]
 );
@@ -107,10 +111,12 @@ $templates->to            = '';
 $mappings->replacements[] = $templates;
 
 // iterate over all templates
-foreach (new RecursiveIteratorIterator(
+$files = new RecursiveIteratorIterator(
     new RecursiveDirectoryIterator($templateDir),
     RecursiveIteratorIterator::LEAVES_ONLY
-) as $file) {
+);
+
+foreach ($files as $file) {
     // force twig to generate cache
     if ($file->isFile() && $file->getExtension() === 'twig') {
         $shortName = str_replace($templateDir, '', $file);

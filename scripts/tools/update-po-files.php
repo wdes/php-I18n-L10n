@@ -1,13 +1,16 @@
 #!/usr/bin/env php
 <?php
-declare(strict_types = 1);
+
 /**
  * @license http://unlicense.org/UNLICENSE The UNLICENSE
  * @author William Desportes <williamdes@wdes.fr>
  */
 
+declare(strict_types = 1);
+
 $options = getopt(
-    '', [
+    '',
+    [
         'po-dir:',
         'po-template:',
         'json-mapping::',
@@ -93,7 +96,7 @@ function poupdate(string $po_file): void
 echo 'PoDir: ' . $poDirectory . "\r\n";
 foreach (glob($poDirectory . '*.po') as $file) {
     exec('msgmerge --quiet --previous -U ' . $file . ' ' . $poTemplate);
-    echo 'File: '. $file . "\r\n";
+    echo 'File: ' . $file . "\r\n";
     poupdate($file);
 }
 poupdate($poTemplate);

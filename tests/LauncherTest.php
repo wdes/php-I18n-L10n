@@ -1,12 +1,14 @@
 <?php
+
 declare(strict_types = 1);
+
 /* The contents of this file is free and unencumbered software released into the
  * public domain.
  * For more information, please refer to <http://unlicense.org/>
  */
 namespace Wdes\phpI18nL10n\Tests;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use Wdes\phpI18nL10n\plugins\MoReader;
 use Wdes\phpI18nL10n\Launcher;
 

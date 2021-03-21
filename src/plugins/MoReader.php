@@ -1,12 +1,14 @@
 <?php
+
 declare(strict_types = 1);
+
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 namespace Wdes\phpI18nL10n\plugins;
 
-use \Exception;
-use \stdClass;
+use Exception;
+use stdClass;
 
 /**
  * Plugin for reading .mo files
@@ -42,7 +44,7 @@ class MoReader extends BasePlugin
     public function __construct(array $options)
     {
         if (is_dir($options['localeDir']) == false) {
-            throw new Exception('The directory does not exist : '.$options['localeDir']);
+            throw new Exception('The directory does not exist : ' . $options['localeDir']);
         }
     }
 
@@ -67,14 +69,14 @@ class MoReader extends BasePlugin
         $this->data->endian = self::determineByteOrder($this->fileRes);
         if ($this->data->endian === -1) {
             fclose($this->fileRes);
-            throw new Exception($file.' is not a valid gettext file.');
+            throw new Exception($file . ' is not a valid gettext file.');
         }
 
         fseek($this->fileRes, 4);
         $this->data->fileFormatRevision = self::readInteger($this->data->endian, $this->fileRes);
         if ($this->data->fileFormatRevision !== 0 && $this->data->fileFormatRevision !== 1) {
             fclose($this->fileRes);
-            throw new Exception($file.' has an unknown major revision.');
+            throw new Exception($file . ' has an unknown major revision.');
         }
         $this->data->nbrOfStrings           = self::readInteger($this->data->endian, $this->fileRes);
         $this->data->tableOffsetOriginal    = self::readInteger($this->data->endian, $this->fileRes);//offset of table with original strings
@@ -121,12 +123,12 @@ class MoReader extends BasePlugin
             $msgStr = null;
             try {
                 $msgId = $this->readStringFromTable($counter, $this->data->msgIdTable);
-            } catch(Exception $e){
+            } catch (Exception $e) {
                 $msgId = [''];
             }
             try {
                 $msgStr = $this->readStringFromTable($counter, $this->data->msgStrTable);
-            } catch(Exception $e){
+            } catch (Exception $e) {
                 $msgStr = [];
             }
             $this->processRecord($data, $msgId, $msgStr);

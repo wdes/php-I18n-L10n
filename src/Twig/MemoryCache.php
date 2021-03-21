@@ -1,12 +1,14 @@
 <?php
+
 declare(strict_types = 1);
+
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 namespace Wdes\phpI18nL10n\Twig;
 
-use \Twig\Cache\CacheInterface;
-use \Twig\TemplateWrapper;
+use Twig\Cache\CacheInterface;
+use Twig\TemplateWrapper;
 
 /**
  * Token parser for Twig
@@ -30,7 +32,7 @@ class MemoryCache implements CacheInterface
      */
     public function generateKey($name, $className): string
     {
-        return 'memcache_'.$name;
+        return 'memcache_' . $name;
     }
 
     /**
@@ -75,7 +77,7 @@ class MemoryCache implements CacheInterface
      */
     public function getFromCache(TemplateWrapper $template): string
     {
-        return $this->memory['memcache_'.$template->getTemplateName()];
+        return $this->memory['memcache_' . $template->getTemplateName()];
     }
 
     /**
@@ -89,7 +91,9 @@ class MemoryCache implements CacheInterface
         $content = self::getFromCache($template);
         // "/function ([a-z_]+)\("
         preg_match_all(
-            '/protected function doDisplay\(([a-z\s,\$=\[\]]+)\)([\s]+){([=%\sa-z\/0-9-\>:\(\)\\\";.,\$\[\]?_-]+)/msi', $content, $output_array
+            '/protected function doDisplay\(([a-z\s,\$=\[\]]+)\)([\s]+){([=%\sa-z\/0-9-\>:\(\)\\\";.,\$\[\]?_-]+)/msi',
+            $content,
+            $output_array
         );
         return $output_array[3][0];
     }

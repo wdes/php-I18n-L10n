@@ -1,15 +1,17 @@
 <?php
+
 declare(strict_types = 1);
+
 /* The contents of this file is free and unencumbered software released into the
  * public domain.
  * For more information, please refer to <http://unlicense.org/>
  */
 namespace Wdes\phpI18nL10n\Tests;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 use Wdes\phpI18nL10n\Twig\Extension\I18n as ExtensionI18n;
-use \Twig\Environment as TwigEnv;
-use \Twig\Loader\FilesystemLoader as TwigLoaderFilesystem;
+use Twig\Environment as TwigEnv;
+use Twig\Loader\FilesystemLoader as TwigLoaderFilesystem;
 use Wdes\phpI18nL10n\plugins\MoReader;
 use Wdes\phpI18nL10n\Launcher;
 use Wdes\phpI18nL10n\Twig\MemoryCache;
@@ -41,7 +43,7 @@ class I18nTest extends TestCase
      */
     public function setUp(): void
     {
-        $dataDir = __DIR__. DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
+        $dataDir = __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
 
         $moReader = new MoReader(
             ['localeDir' => $dataDir]
@@ -52,7 +54,8 @@ class I18nTest extends TestCase
         $loader            = new TwigLoaderFilesystem();
         $this->memoryCache = new MemoryCache();
         $this->twig        = new TwigEnv(
-            $loader, [
+            $loader,
+            [
                 'cache' => $this->memoryCache,
                 'debug' => true
             ]
@@ -185,8 +188,8 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
-            'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person"'.
-            ', "%nbr% persons", abs(        // line 1' . "\n" . '($context["nbr_persons"] ?? null))),'.
+            'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person"' .
+            ', "%nbr% persons", abs(        // line 1' . "\n" . '($context["nbr_persons"] ?? null))),' .
             ' array("%nbr%" => ($context["nbr"] ?? null), ));',
             $generatedCode
         );
@@ -206,9 +209,9 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
-            'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext('.
-            '"one user likes this.", "%nbr% users likes this.",'.
-            ' abs(        // line 1' . "\n" . '($context["nbr_persons"] ?? null))),'.
+            'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext(' .
+            '"one user likes this.", "%nbr% users likes this.",' .
+            ' abs(        // line 1' . "\n" . '($context["nbr_persons"] ?? null))),' .
             ' array("%nbr%" => ($context["nbr"] ?? null), ));',
             $generatedCode
         );
@@ -253,7 +256,7 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
-            'echo \Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person",'.
+            'echo \Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person",' .
             ' "persons", abs(twig_get_attribute($this->env, $this->source,         // line 1' . "\n" .
             '($context["a"] ?? null), "count", [], "any", false, false, false, 1)));',
             $generatedCode
@@ -274,10 +277,10 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
-            'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person",'.
-            ' "persons and %count% dogs", abs(twig_get_attribute($this->env,'.
-            ' $this->source,         // line 1' . "\n" . '($context["a"] ?? null), "count", [], "any", false, false, false, 1))),'.
-            ' array("%count%" => abs(twig_get_attribute($this->env,'.
+            'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person",' .
+            ' "persons and %count% dogs", abs(twig_get_attribute($this->env,' .
+            ' $this->source,         // line 1' . "\n" . '($context["a"] ?? null), "count", [], "any", false, false, false, 1))),' .
+            ' array("%count%" => abs(twig_get_attribute($this->env,' .
             ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1)), ));',
             $generatedCode
         );
