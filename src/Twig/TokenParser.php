@@ -20,7 +20,7 @@ class TokenParser extends TransTokenParser
      *
      * @param Token $token The token
      *
-     * @return Node
+     * @return TranslationNode
      */
     public function parse(Token $token)
     {
