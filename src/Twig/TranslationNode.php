@@ -29,9 +29,9 @@ class TranslationNode extends TransNode
     public static $hasContextFunctions = true;
 
     /**
-     * @param bool $hasPlural use plural
+     * @param bool $hasPlural  use plural
      * @param bool $hasContext use context
-     * @param bool $hasDomain use domain
+     * @param bool $hasDomain  use domain
      *
      * @return string The function
      */
