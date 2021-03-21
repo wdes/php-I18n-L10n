@@ -33,7 +33,7 @@ xgettext \
     --msgid-bugs-address=williamdes@wdes.fr \
     --from-code=utf-8 \
     --keyword=gettext --keyword=pgettext:1c,2 --keyword=ngettext:1,2 \
-    -p $2 \
+    -p "$2" \
     --from-code=UTF-8 \
     --add-comments=l10n \
     --add-location -L PHP $(find "$1" \( -name "*.php" \) | sort) \
