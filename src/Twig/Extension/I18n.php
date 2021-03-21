@@ -6,7 +6,7 @@ declare(strict_types = 1);
 namespace Wdes\phpI18nL10n\Twig\Extension;
 
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
-use Wdes\phpI18nL10n\Launcher;
+use Twig\TwigFilter;
 use Wdes\phpI18nL10n\Twig\TokenParser;
 
 /**
@@ -25,22 +25,13 @@ class I18n extends I18nExtension
     }
 
     /**
-     * Translate a GetText string via filter
-     *
-     * @param string      $message The message to translate
-     * @param string|null $domain  The GetText domain
-     *
-     * @return string The translated string
+     * @return array
      */
-    public function translate(string $message, ?string $domain = null): string
+    public function getFilters()
     {
-        /* If we don't have a domain, assume we're just using the default */
-        if ($domain === null) {
-            return Launcher::gettext($message);
-        }
-
-        /* Otherwise specify where the message comes from */
-        return Launcher::dgettext($domain, $message);
+        return [
+            new TwigFilter('trans', '\Wdes\phpI18nL10n\Launcher::gettext'), /* Note, the filter does not handle plurals */
+        ];
     }
 
 }
