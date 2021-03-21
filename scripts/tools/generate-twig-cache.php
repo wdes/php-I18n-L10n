@@ -114,7 +114,11 @@ foreach (new RecursiveIteratorIterator(
     // force twig to generate cache
     if ($file->isFile() && $file->getExtension() === 'twig') {
         $shortName = str_replace($templateDir, '', $file);
-        $template  = $twig->loadTemplate($shortName);
+        if (TwigEnvironment::MAJOR_VERSION === 3) {
+            $template = $twig->loadTemplate($twig->getTemplateClass($shortName), $shortName);
+        } else {// @phpstan-ignore-line Twig 2
+            $template = $twig->loadTemplate($shortName);// @phpstan-ignore-line Twig 2
+        }
         // Generate line map
         $cacheFile                                 = $cache->generateKey($shortName, $twig->getTemplateClass($shortName));
         $cacheFile                                 = str_replace($options["twig-cache-dir"], '', $cacheFile);
