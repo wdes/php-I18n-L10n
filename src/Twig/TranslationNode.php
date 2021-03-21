@@ -35,10 +35,10 @@ class TranslationNode extends Node
      */
     public function __construct(
         Node $body,
-        Node $plural = null,
-        AbstractExpression $count = null,
-        Node $context = null,
-        Node $notes = null,
+        ?Node $plural = null,
+        ?AbstractExpression $count = null,
+        ?Node $context = null,
+        ?Node $notes = null,
         $lineno,
         $tag = null
     ) {

@@ -5,7 +5,6 @@ declare(strict_types = 1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 namespace Wdes\phpI18nL10n\Twig;
 
-use Wdes\phpI18nL10n\Twig\TranslationNode;
 use Twig\Error\SyntaxError;
 use Twig\Node\Expression\NameExpression;
 use Twig\Node\Node;

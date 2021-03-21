@@ -5,7 +5,6 @@ declare(strict_types = 1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 namespace Wdes\phpI18nL10n\plugins;
 
-use Wdes\phpI18nL10n\plugins\BasePlugin;
 use \Exception;
 use \stdClass;
 
@@ -233,7 +232,7 @@ class MoReader extends BasePlugin
      * @license MIT
      * @param int      $endian ENDIAN_BIG/ENDIAN_LITTLE
      * @param  resource $res    The file resource
-     * @return integer
+     * @return int
      */
     public static function readInteger(int $endian, $res)
     {
