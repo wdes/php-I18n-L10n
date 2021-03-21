@@ -8,7 +8,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Cache module
-              uses: actions/cache@v1.1.2
+              uses: actions/cache@v2
               with:
                   path: ~/.composer/cache/
                   key: composer-cache
@@ -27,7 +27,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Cache module
-              uses: actions/cache@v1.1.2
+              uses: actions/cache@v2
               with:
                   path: ~/.composer/cache/
                   key: composer-cache

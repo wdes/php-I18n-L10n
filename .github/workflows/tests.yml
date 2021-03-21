@@ -19,7 +19,7 @@ jobs:
                   coverage: xdebug
                   extensions: mbstring
             - name: Cache module
-              uses: actions/cache@v1.1.2
+              uses: actions/cache@v2
               with:
                   path: ~/.composer/cache/
                   key: composer-cache
