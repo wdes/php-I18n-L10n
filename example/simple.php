@@ -14,8 +14,9 @@ $dataDir  = __DIR__ . '/locale/';
 $moReader = new MoReader(
     ['localeDir' => $dataDir]
 );
-$moReader->readFile($dataDir . 'fr.mo'); // Load the file you want (a sepecific language for example)
-Launcher::$plugin = $moReader;
+$moReader->readFile($dataDir . 'fr.mo'); // Load the file you want (a specific language for example)
+// Load the translation plugin
+Launcher::setPlugin($moReader);
 
 $loader = new TwigLoaderFilesystem([ __DIR__ . '/templates/' ]); // Load all templates from the dir
 $twig   = new TwigEnvironment($loader);

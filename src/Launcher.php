@@ -20,7 +20,7 @@ class Launcher
      *
      * @var BasePlugin
      */
-    public static $plugin;
+    private static $plugin;
 
     /**
      * Return registered plugin
@@ -33,6 +33,16 @@ class Launcher
     }
 
     /**
+     * Set the translation plugin
+     * @param BasePlugin $plugin The translation plugin to provide
+     * @return void
+     */
+    public static function setPlugin(BasePlugin $plugin): void
+    {
+        Launcher::$plugin = $plugin;
+    }
+
+    /**
      * Access gettext directly, not recommended
      * Reserved to twig filter
      *
@@ -42,6 +52,19 @@ class Launcher
     public static function gettext(string $msgId): string
     {
         return Launcher::$plugin->gettext($msgId);
+    }
+
+    /**
+     * Access dgettext directly, not recommended
+     * Reserved to twig filter
+     *
+     * @param string $domain The domain
+     * @param string $msgId  Message id
+     * @return string
+     */
+    public static function dgettext(string $domain, string $msgId): string
+    {
+        return Launcher::$plugin->dgettext($domain, $msgId);
     }
 
 }

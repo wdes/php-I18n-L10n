@@ -32,7 +32,7 @@ class LauncherTest extends TestCase
             ['localeDir' => $dataDir]
         );
         $moReader->readFile($dataDir . 'abc.mo');
-        Launcher::$plugin = $moReader;
+        Launcher::setPlugin($moReader);
         $this->assertSame('Traduis ça', Launcher::gettext('Translate this'));
     }
 
@@ -50,7 +50,7 @@ class LauncherTest extends TestCase
             ['localeDir' => $dataDir]
         );
         $moReader->readFile($dataDir . 'abc.mo');
-        Launcher::$plugin = $moReader;
+        Launcher::setPlugin($moReader);
         $this->assertSame($moReader, Launcher::getPlugin());
     }
 

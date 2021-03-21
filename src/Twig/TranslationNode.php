@@ -6,181 +6,60 @@ declare(strict_types = 1);
  */
 namespace Wdes\phpI18nL10n\Twig;
 
-use Twig\Compiler;
-use Twig\Node\Expression\AbstractExpression;
-use Twig\Node\Expression\ConstantExpression;
-use Twig\Node\Expression\FilterExpression;
-use Twig\Node\Expression\NameExpression;
-use Twig\Node\Expression\TempNameExpression;
-use Twig\Node\Node;
-use Twig\Node\PrintNode;
+use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 
 /**
  * Translation node for Twig
  * @license MPL-2.0
  */
-class TranslationNode extends Node
+class TranslationNode extends TransNode
 {
+    /**
+     * The label for gettext notes to be exported
+     *
+     * @var string
+     */
+    public static $notesLabel = '// l10n: ';
 
     /**
-     * Create a new TranslationNode
+     * Enables context functions usage
      *
-     * @param Node               $body    Body of the node
-     * @param Node               $plural  Node plural
-     * @param AbstractExpression $count   Number of nodes
-     * @param Node               $context Context
-     * @param Node               $notes   Notes for node
-     * @param int                $lineno  The line number
-     * @param string             $tag     Node tag name
+     * @var bool
      */
-    public function __construct(
-        Node $body,
-        ?Node $plural = null,
-        ?AbstractExpression $count = null,
-        ?Node $context = null,
-        ?Node $notes = null,
-        $lineno,
-        $tag = null
-    ) {
-        $nodes = ['body' => $body];
-        if (null !== $context) {
-            $nodes['context'] = $context;
-        }
-        if (null !== $count) {
-            $nodes['count'] = $count;
-        }
-        if (null !== $notes) {
-            $nodes['notes'] = $notes;
-        }
-        if (null !== $plural) {
-            $nodes['plural'] = $plural;
-        }
-
-        parent::__construct($nodes, [], $lineno, $tag);
-    }
+    public static $hasContextFunctions = true;
 
     /**
-     * Compiles the node to PHP.
+     * @param bool $hasPlural use plural
+     * @param bool $hasContext use context
+     * @param bool $hasDomain use domain
      *
-     * @param Compiler $compiler Node compiler
-     * @return void
+     * @return string The function
      */
-    public function compile(Compiler $compiler): void
+    protected function getTransFunction(bool $hasPlural, bool $hasContext, bool $hasDomain): string
     {
-        $pMessage = null;
-        $compiler->addDebugInfo($this);
-        list($msg, $vars) = $this->compileString($this->getNode('body'));
-        if ($this->hasNode('plural')) {
-            list($pMessage, $Pvars) = $this->compileString($this->getNode('plural'));
-            $vars                   = array_merge($vars, $Pvars);
-        }
+        $functionPrefix = '\Wdes\phpI18nL10n\Launcher::getPlugin()->';
 
-        $prefix = '\Wdes\phpI18nL10n\Launcher::getPlugin()->';
-        if ($this->hasNode('context')) {
-            $function = $this->hasNode('plural') ? 'ngettext' : 'pgettext';
-        } else {
-            $function = $this->hasNode('plural') ? 'ngettext' : 'gettext';
-        }
-        $function = $prefix.$function;
-
-        if ($this->hasNode('notes')) {
-            $message = trim($this->getNode('notes')->getAttribute('data'));
-            // line breaks are removed
-            $message = str_replace(["\n", "\r"], ' ', $message);
-            $compiler->write("// l10n: {$message}\n");
-        }
-        if ($vars) {
-            $compiler->write('echo strtr('.$function.'(');
-            if ($this->hasNode('context')) {
-                $context = trim($this->getNode('context')->getAttribute('data'));
-                $compiler->raw('"'.$context.'", ');
+        if ($hasDomain) {
+            if ($hasPlural) {
+                // dnpgettext($domain, $msgctxt, $msgid, $msgidPlural, $number);
+                // dngettext($domain, $msgid, $msgidPlural, $number);
+                return $functionPrefix . ($hasContext ? 'dnpgettext' : 'dngettext');
             }
-            $compiler->subcompile($msg);
-            if ($this->hasNode('plural')) {
-                $compiler->raw(', ')->subcompile($pMessage)->raw(', abs(')->subcompile($this->hasNode('count') ? $this->getNode('count') : null)->raw(')');
-            }
-            $compiler->raw('), [');
-            $this->compileVarsArgs($compiler, $vars);
-            $compiler->raw("]);\n");
-        } else {
-            $compiler->write('echo '.$function.'(');
-            if ($this->hasNode('context')) {
-                $context = trim($this->getNode('context')->getAttribute('data'));
-                $compiler->raw('"'.$context.'", ');
-            }
-            $compiler->subcompile($msg);
-            if ($this->hasNode('plural')) {
-                $compiler->raw(', ')->subcompile($pMessage)->raw(', abs(')->subcompile($this->hasNode('count') ? $this->getNode('count') : null)->raw(')');
-            }
-            $compiler->raw(");\n");
-        }
-    }
 
-    /**
-     * @param Compiler         $compiler The template compiler
-     * @param NameExpression[] $vars     The variables
-     * @return void
-     */
-    public function compileVarsArgs(Compiler $compiler, array $vars): void
-    {
-        $lastKey = array_keys($vars)[count($vars) - 1] ?? null;
-        foreach ($vars as $key => $var) {
-            $attrName = $var->getAttribute('name');
-            if ($attrName === 'count') {
-                $compiler->string('%count%')->raw(' => abs(');
-                if ($this->hasNode('count')) {
-                    $compiler->subcompile($this->getNode('count'));
-                }
-                if ($key === $lastKey) {
-                    $compiler->raw(')');
-                } else {
-                    $compiler->raw('), ');
-                }
-            } else {
-                if ($key === $lastKey) {
-                    $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var);
-                } else {
-                    $compiler->string('%'.$attrName.'%')->raw(' => ')->subcompile($var)->raw(', ');
-                }
-            }
-        }
-    }
-
-    /**
-     * Compile a translation string
-     *
-     * @author Fabien Potencier <fabien.potencier@symfony-project.com>
-     * @param Node $body A Node instance
-     *
-     * @return array
-     */
-    protected function compileString(Node $body)
-    {
-        if ($body instanceof NameExpression || $body instanceof ConstantExpression || $body instanceof TempNameExpression) {
-            return [$body, []];
+            // dpgettext($domain, $msgctxt, $msgid);
+            // dgettext($domain, $msgid);
+            return $functionPrefix . ($hasContext ? 'dpgettext' : 'dgettext');
         }
 
-        $vars = [];
-        if (count($body)) {
-            $msg = '';
-
-            foreach ($body as $node) {
-                if ($node instanceof PrintNode) {
-                    $n = $node->getNode('expr');
-                    while ($n instanceof FilterExpression) {
-                        $n = $n->getNode('node');
-                    }
-                    $msg   .= sprintf('%%%s%%', $n->getAttribute('name'));
-                    $vars[] = new NameExpression($n->getAttribute('name'), $n->getTemplateLine());
-                } else {
-                    $msg .= $node->getAttribute('data');
-                }
-            }
-        } else {
-            $msg = $body->getAttribute('data');
+        if ($hasPlural) {
+            // npgettext($msgctxt, $msgid, $msgidPlural, $number);
+            // ngettext($msgid, $msgidPlural, $number);
+            return $functionPrefix . ($hasContext ? 'npgettext' : 'ngettext');
         }
 
-        return [new Node([new ConstantExpression(trim($msg), $body->getTemplateLine())]), $vars];
+        // pgettext($msgctxt, $msgid);
+        // gettext($msgid);
+        return $functionPrefix . ($hasContext ? 'pgettext' : 'gettext');
     }
 
 }

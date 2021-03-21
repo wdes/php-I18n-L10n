@@ -47,7 +47,7 @@ class I18nTest extends TestCase
             ["localeDir" => $dataDir]
         );
         $moReader->readFile($dataDir . "abc.mo");
-        Launcher::$plugin = $moReader;
+        Launcher::setPlugin($moReader);
 
         $loader            = new TwigLoaderFilesystem();
         $this->memoryCache = new MemoryCache();
@@ -136,7 +136,7 @@ class I18nTest extends TestCase
 
         $this->assertStringContainsString(
             'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->pgettext("The user name", "Translate this %name%"), '
-            . '["%name%" => ($context["name"] ?? null)]);',
+            . 'array("%name%" =>         // line 1' . "\n" . '($context["name"] ?? null), ));',
             $generatedCode
         );
         $html = $template->render(
@@ -161,7 +161,7 @@ class I18nTest extends TestCase
 
         $this->assertStringContainsString(
             'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->pgettext("The user name", "Translate this %key%: %value%"), '
-            . '["%key%" => ($context["key"] ?? null), "%value%" => ($context["value"] ?? null)]);',
+            . 'array("%key%" =>         // line 1' . "\n" . '($context["key"] ?? null), "%value%" => ($context["value"] ?? null), ));',
             $generatedCode
         );
         $html = $template->render(
@@ -186,8 +186,8 @@ class I18nTest extends TestCase
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
             'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person"'.
-            ', "%nbr% persons", abs(($context["nbr_persons"] ?? null))),'.
-            ' ["%nbr%" => ($context["nbr"] ?? null)]);',
+            ', "%nbr% persons", abs(        // line 1' . "\n" . '($context["nbr_persons"] ?? null))),'.
+            ' array("%nbr%" => ($context["nbr"] ?? null), ));',
             $generatedCode
         );
         $html = $template->render(["nbr" => 5]);
@@ -208,8 +208,8 @@ class I18nTest extends TestCase
         $this->assertStringContainsString(
             'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext('.
             '"one user likes this.", "%nbr% users likes this.",'.
-            ' abs(($context["nbr_persons"] ?? null))),'.
-            ' ["%nbr%" => ($context["nbr"] ?? null)]);',
+            ' abs(        // line 1' . "\n" . '($context["nbr_persons"] ?? null))),'.
+            ' array("%nbr%" => ($context["nbr"] ?? null), ));',
             $generatedCode
         );
         $this->assertStringContainsString(
@@ -232,7 +232,7 @@ class I18nTest extends TestCase
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
-            'echo \Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person", "persons", abs(($context["a"] ?? null)));',
+            'echo \Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person", "persons", abs(        // line 1' . "\n" . '($context["a"] ?? null)));',
             $generatedCode
         );
         $html = $template->render(["nbr" => 5]);
@@ -254,8 +254,8 @@ class I18nTest extends TestCase
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
             'echo \Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person",'.
-            ' "persons", abs(twig_get_attribute($this->env, $this->source,'.
-            ' ($context["a"] ?? null), "count", [], "any", false, false, false, 1)));',
+            ' "persons", abs(twig_get_attribute($this->env, $this->source,         // line 1' . "\n" .
+            '($context["a"] ?? null), "count", [], "any", false, false, false, 1)));',
             $generatedCode
         );
         $html = $template->render(["a" => ["1", "2"]]);
@@ -276,9 +276,9 @@ class I18nTest extends TestCase
         $this->assertStringContainsString(
             'echo strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person",'.
             ' "persons and %count% dogs", abs(twig_get_attribute($this->env,'.
-            ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1))),'.
-            ' ["%count%" => abs(twig_get_attribute($this->env,'.
-            ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1))]);',
+            ' $this->source,         // line 1' . "\n" . '($context["a"] ?? null), "count", [], "any", false, false, false, 1))),'.
+            ' array("%count%" => abs(twig_get_attribute($this->env,'.
+            ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1)), ));',
             $generatedCode
         );
         $html = $template->render(["a" => ["1", "2"], "nbrdogs" => 3]);

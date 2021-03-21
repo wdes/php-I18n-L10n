@@ -5,49 +5,42 @@ declare(strict_types = 1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 namespace Wdes\phpI18nL10n\Twig\Extension;
 
+use PhpMyAdmin\Twig\Extensions\I18nExtension;
+use Wdes\phpI18nL10n\Launcher;
 use Wdes\phpI18nL10n\Twig\TokenParser;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 
 /**
  * I18n extension for Twig
  * @license MPL-2.0
  */
-class I18n extends AbstractExtension
+class I18n extends I18nExtension
 {
 
     /**
-     * Get the filters
-     *
-     * @return TwigFilter[]
+     * @return array
      */
-    public function getFilters(): array
+    public function getTokenParsers()
     {
-        return [
-            new TwigFilter(
-                'trans', '\Wdes\phpI18nL10n\Launcher::gettext'
-            ),
-        ];
+        return [new TokenParser()];
     }
 
     /**
-     * Get the token parsers
+     * Translate a GetText string via filter
      *
-     * @return \Twig\TokenParser\TokenParserInterface[]
+     * @param string      $message The message to translate
+     * @param string|null $domain  The GetText domain
+     *
+     * @return string The translated string
      */
-    public function getTokenParsers(): array
+    public function translate(string $message, ?string $domain = null): string
     {
-        return [
-            new TokenParser()
-        ];
-    }
+        /* If we don't have a domain, assume we're just using the default */
+        if ($domain === null) {
+            return Launcher::gettext($message);
+        }
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'i18n';
+        /* Otherwise specify where the message comes from */
+        return Launcher::dgettext($domain, $message);
     }
 
 }
