@@ -30,7 +30,7 @@ class MoReaderTest extends TestCase
     public function testInstance(): MoReader
     {
         $moReader = new MoReader(
-            ["localeDir" => self::$dir]
+            ['localeDir' => self::$dir]
         );
         $this->assertInstanceOf(MoReader::class, $moReader);
 
@@ -44,7 +44,7 @@ class MoReaderTest extends TestCase
      */
     public function testException(): void
     {
-        $folderString = self::$dir . str_shuffle("abcdefghijklmnopqrstuv");
+        $folderString = self::$dir . str_shuffle('abcdefghijklmnopqrstuv');
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('The directory does not exist : ' . $folderString);
         $this->expectExceptionCode(0);
@@ -61,16 +61,16 @@ class MoReaderTest extends TestCase
      */
     public function testReadFile(MoReader $moReader): void
     {
-        $data = $moReader->readFile(self::$dir."account-manager-en.mo");
+        $data = $moReader->readFile(self::$dir.'account-manager-en.mo');
         $this->assertInstanceOf(stdClass::class, $data);
         //echo \json_encode($data, JSON_PRETTY_PRINT);
-        $data = $moReader->readFile(self::$dir."account-manager-fr.mo");
+        $data = $moReader->readFile(self::$dir.'account-manager-fr.mo');
         $this->assertInstanceOf(stdClass::class, $data);
         //echo \json_encode($data, JSON_PRETTY_PRINT);
-        $data = $moReader->readFile(self::$dir."fr_FR.mo");
+        $data = $moReader->readFile(self::$dir.'fr_FR.mo');
         $this->assertInstanceOf(stdClass::class, $data);
         //echo \json_encode($data, JSON_PRETTY_PRINT);
-        $data = $moReader->readFile(self::$dir."plurals1.mo");
+        $data = $moReader->readFile(self::$dir.'plurals1.mo');
         $this->assertInstanceOf(stdClass::class, $data);
         //echo \json_encode($data, JSON_PRETTY_PRINT);
     }

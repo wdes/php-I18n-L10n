@@ -42,7 +42,7 @@ class MoReader extends BasePlugin
     public function __construct(array $options)
     {
         if (is_dir($options['localeDir']) == false) {
-            throw new Exception("The directory does not exist : ".$options['localeDir']);
+            throw new Exception('The directory does not exist : '.$options['localeDir']);
         }
     }
 
@@ -62,19 +62,19 @@ class MoReader extends BasePlugin
         if (is_resource($res)) {
             $this->fileRes = $res;
         } else {
-            throw new Exception($file . " could not be open.");
+            throw new Exception($file . ' could not be open.');
         }
         $this->data->endian = self::determineByteOrder($this->fileRes);
         if ($this->data->endian === -1) {
             fclose($this->fileRes);
-            throw new Exception($file." is not a valid gettext file.");
+            throw new Exception($file.' is not a valid gettext file.');
         }
 
         fseek($this->fileRes, 4);
         $this->data->fileFormatRevision = self::readInteger($this->data->endian, $this->fileRes);
         if ($this->data->fileFormatRevision !== 0 && $this->data->fileFormatRevision !== 1) {
             fclose($this->fileRes);
-            throw new Exception($file." has an unknown major revision.");
+            throw new Exception($file.' has an unknown major revision.');
         }
         $this->data->nbrOfStrings           = self::readInteger($this->data->endian, $this->fileRes);
         $this->data->tableOffsetOriginal    = self::readInteger($this->data->endian, $this->fileRes);//offset of table with original strings
@@ -173,10 +173,10 @@ class MoReader extends BasePlugin
             if (is_string($read)) {
                 return explode("\0", $read);
             } else {
-                throw new Exception("read error !");
+                throw new Exception('read error !');
             }
         }
-        throw new Exception("size error !");
+        throw new Exception('size error !');
     }
 
     /**
@@ -228,7 +228,7 @@ class MoReader extends BasePlugin
             }
             return $unPack;
         } else {
-            throw new Exception("read error !");
+            throw new Exception('read error !');
         }
     }
 
@@ -252,7 +252,7 @@ class MoReader extends BasePlugin
             }
             return $result === false ? PHP_INT_MAX : $result['int'];
         } else {
-            throw new Exception("read error !");
+            throw new Exception('read error !');
         }
     }
 

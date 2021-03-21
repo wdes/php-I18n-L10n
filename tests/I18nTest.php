@@ -44,9 +44,9 @@ class I18nTest extends TestCase
         $dataDir = __DIR__. DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
 
         $moReader = new MoReader(
-            ["localeDir" => $dataDir]
+            ['localeDir' => $dataDir]
         );
-        $moReader->readFile($dataDir . "abc.mo");
+        $moReader->readFile($dataDir . 'abc.mo');
         Launcher::setPlugin($moReader);
 
         $loader            = new TwigLoaderFilesystem();
@@ -76,7 +76,7 @@ class I18nTest extends TestCase
             $generatedCode
         );
         $html = $template->render([]);
-        $this->assertEquals("Traduis ça", $html);
+        $this->assertEquals('Traduis ça', $html);
         $this->assertNotEmpty($html);
     }
 
@@ -99,7 +99,7 @@ class I18nTest extends TestCase
             $generatedCode
         );
         $html = $template->render([]);
-        $this->assertEquals("Traduis ça", $html);
+        $this->assertEquals('Traduis ça', $html);
         $this->assertNotEmpty($html);
     }
 
@@ -119,7 +119,7 @@ class I18nTest extends TestCase
             $generatedCode
         );
         $html = $template->render([]);
-        $this->assertEquals("Traduis ça", $html);
+        $this->assertEquals('Traduis ça', $html);
         $this->assertNotEmpty($html);
     }
 
@@ -190,8 +190,8 @@ class I18nTest extends TestCase
             ' array("%nbr%" => ($context["nbr"] ?? null), ));',
             $generatedCode
         );
-        $html = $template->render(["nbr" => 5]);
-        $this->assertEquals("One person", $html);
+        $html = $template->render(['nbr' => 5]);
+        $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }
 
@@ -216,8 +216,8 @@ class I18nTest extends TestCase
             '// l10n: Number of users',
             $generatedCode
         );
-        $html = $template->render(["nbr" => 5]);
-        $this->assertEquals("one user likes this.", $html);
+        $html = $template->render(['nbr' => 5]);
+        $this->assertEquals('one user likes this.', $html);
         $this->assertNotEmpty($html);
     }
 
@@ -235,8 +235,8 @@ class I18nTest extends TestCase
             'echo \Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person", "persons", abs(        // line 1' . "\n" . '($context["a"] ?? null)));',
             $generatedCode
         );
-        $html = $template->render(["nbr" => 5]);
-        $this->assertEquals("One person", $html);
+        $html = $template->render(['nbr' => 5]);
+        $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }
 
@@ -258,8 +258,8 @@ class I18nTest extends TestCase
             '($context["a"] ?? null), "count", [], "any", false, false, false, 1)));',
             $generatedCode
         );
-        $html = $template->render(["a" => ["1", "2"]]);
-        $this->assertEquals("One person", $html);
+        $html = $template->render(['a' => ['1', '2']]);
+        $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }
 
@@ -281,8 +281,8 @@ class I18nTest extends TestCase
             ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1)), ));',
             $generatedCode
         );
-        $html = $template->render(["a" => ["1", "2"], "nbrdogs" => 3]);
-        $this->assertEquals("One person", $html);
+        $html = $template->render(['a' => ['1', '2'], 'nbrdogs' => 3]);
+        $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }
 

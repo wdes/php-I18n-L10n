@@ -54,6 +54,6 @@
         "phpunit/phpunit": "^7 || ^8 || ^9",
         "slevomat/coding-standard": "^6.0",
         "phpstan/phpstan": "^0.12",
-        "wdes/coding-standard": "^1.0"
+        "wdes/coding-standard": "^2"
     }
 }

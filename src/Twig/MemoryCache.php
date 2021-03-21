@@ -30,7 +30,7 @@ class MemoryCache implements CacheInterface
      */
     public function generateKey($name, $className): string
     {
-        return "memcache_".$name;
+        return 'memcache_'.$name;
     }
 
     /**
@@ -75,7 +75,7 @@ class MemoryCache implements CacheInterface
      */
     public function getFromCache(TemplateWrapper $template): string
     {
-        return $this->memory["memcache_".$template->getTemplateName()];
+        return $this->memory['memcache_'.$template->getTemplateName()];
     }
 
     /**
