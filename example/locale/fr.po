@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Test\n"
 "Report-Msgid-Bugs-To: williamdes@wdes.fr\n"
-"POT-Creation-Date: 2020-03-29 17:39+0200\n"
+"POT-Creation-Date: 2021-03-21 11:53+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Wdes\n"
@@ -15,12 +15,12 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #. l10n: The title of the page
-#: example/templates/homepage.twig:2
-#: example/templates/homepage.twig:5
+#: example/templates/homepage.twig:1
+#: example/templates/homepage.twig:4
 msgid "Homepage"
 msgstr "Page d'accueil"
 
-#: example/templates/homepage.twig:6
+#: example/templates/homepage.twig:5
 msgid "Another format"
 msgstr "Un autre format"
 
