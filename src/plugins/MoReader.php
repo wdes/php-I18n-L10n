@@ -216,10 +216,17 @@ class MoReader extends BasePlugin
         $read = fread($res, 4 * $nbr);
         if (is_string($read)) {
             if ($endian === self::ENDIAN_LITTLE) {
-                return unpack('V' . $nbr, $read);
-            } else {
-                return unpack('N' . $nbr, $read);
+                $unPack = unpack('V' . $nbr, $read);
+                if ($unPack === false) {
+                    return [];
+                }
+                return $unPack;
             }
+            $unPack = unpack('N' . $nbr, $read);
+            if ($unPack === false) {
+                return [];
+            }
+            return $unPack;
         } else {
             throw new Exception("read error !");
         }
@@ -243,7 +250,7 @@ class MoReader extends BasePlugin
             } else {
                 $result = unpack('Nint', $read);
             }
-            return $result['int'];
+            return $result === false ? PHP_INT_MAX : $result['int'];
         } else {
             throw new Exception("read error !");
         }
