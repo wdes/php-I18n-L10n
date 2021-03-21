@@ -46,7 +46,7 @@
         }
     },
     "require": {
-        "php": "^7.1 || ^8.0",
+        "php": "^7.2.9 || ^8.0",
         "twig/twig": "^3",
         "phpmyadmin/twig-i18n-extension": "^4.0"
     },
