@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Use `phpmyadmin/twig-i18n-extension` for Twig translation tag and pipe support
+- Drop Twig 2
+- Support Twig 3
+
 ## [v2.1.0] - 2020-12-01
 
 - Add support for PHP 8.0
