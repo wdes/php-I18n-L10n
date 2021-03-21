@@ -51,7 +51,7 @@ class MemoryCache implements CacheInterface
      * @param string $key The cache key
      * @return void
      */
-    public function load($key)
+    public function load(string $key): void
     {
         //load(string $key): void for twig 3.x
     }
