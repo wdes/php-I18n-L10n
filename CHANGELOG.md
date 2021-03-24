@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v3.0.0] - 2021-03-24
+
 - Use `phpmyadmin/twig-i18n-extension` for Twig translation tag and pipe support
 - Drop Twig 2
 - Support Twig 3
@@ -13,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Require PHP `>=` `7.2.9`
 - Add `Launcher::setPlugin($moReader);`
 - Remove direct access to `Launcher::$plugin`
-- Apply `wdes/coding-standard`
+- Applied `wdes/coding-standard` on the code-base
 
 ## [v2.1.0] - 2020-12-01
 
