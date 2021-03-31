@@ -31,28 +31,10 @@ class MoReaderTest extends TestCase
      */
     public function testInstance(): MoReader
     {
-        $moReader = new MoReader(
-            ['localeDir' => self::$dir]
-        );
+        $moReader = new MoReader();
         $this->assertInstanceOf(MoReader::class, $moReader);
 
         return $moReader;
-    }
-
-    /**
-     * test Dir does not exist
-     *
-     * @return void
-     */
-    public function testException(): void
-    {
-        $folderString = self::$dir . str_shuffle('abcdefghijklmnopqrstuv');
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('The directory does not exist : ' . $folderString);
-        $this->expectExceptionCode(0);
-        new MoReader(
-            ['localeDir' => $folderString]
-        );
     }
 
     /**

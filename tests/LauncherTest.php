@@ -30,9 +30,7 @@ class LauncherTest extends TestCase
         $S       = DIRECTORY_SEPARATOR;
         $dataDir = __DIR__ . $S . 'data' . $S;
 
-        $moReader = new MoReader(
-            ['localeDir' => $dataDir]
-        );
+        $moReader = new MoReader();
         $moReader->readFile($dataDir . 'abc.mo');
         Launcher::setPlugin($moReader);
         $this->assertSame('Traduis ça', Launcher::gettext('Translate this'));
@@ -48,9 +46,7 @@ class LauncherTest extends TestCase
         $S       = DIRECTORY_SEPARATOR;
         $dataDir = __DIR__ . $S . 'data' . $S;
 
-        $moReader = new MoReader(
-            ['localeDir' => $dataDir]
-        );
+        $moReader = new MoReader();
         $moReader->readFile($dataDir . 'abc.mo');
         Launcher::setPlugin($moReader);
         $this->assertSame($moReader, Launcher::getPlugin());

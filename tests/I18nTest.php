@@ -37,6 +37,13 @@ class I18nTest extends TestCase
     private $twig = null;
 
     /**
+     * The MoReader object
+     *
+     * @var MoReader
+     */
+    private $moReader = null;
+
+    /**
      * Set up the instance
      *
      * @return void
@@ -45,11 +52,9 @@ class I18nTest extends TestCase
     {
         $dataDir = __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
 
-        $moReader = new MoReader(
-            ['localeDir' => $dataDir]
-        );
-        $moReader->readFile($dataDir . 'abc.mo');
-        Launcher::setPlugin($moReader);
+        $this->moReader = new MoReader();
+        $this->moReader->readFile($dataDir . 'abc.mo');
+        Launcher::setPlugin($this->moReader);
 
         $loader            = new TwigLoaderFilesystem();
         $this->memoryCache = new MemoryCache();
@@ -62,6 +67,40 @@ class I18nTest extends TestCase
         );
 
         $this->twig->addExtension(new ExtensionI18n());
+    }
+
+    /**
+     * Test simple translation using get and set
+     * @return void
+     */
+    public function testSimpleTranslationGetSetTranslations(): void
+    {
+        $template = $this->twig->createTemplate(
+            '{% trans "Translate this" %}',
+            'testSimpleTranslationGetSetTranslations'
+        );
+        $html     = $template->render([]);
+        $this->assertNotEmpty($html);
+        $this->assertEquals('Traduis ça', $html);
+        $this->moReader->setTranslations([]);
+        $this->assertSame($this->moReader->getTranslations(), []);
+        $html = $template->render([]);
+        $this->assertNotEmpty($html);
+        $this->assertEquals('Translate this', $html);
+        $this->moReader->setTranslations(
+            [
+            'Translate this' => 'blob blob blob',
+            ]
+        );
+        $this->assertSame(
+            $this->moReader->getTranslations(),
+            [
+            'Translate this' => 'blob blob blob',
+            ]
+        );
+        $html = $template->render([]);
+        $this->assertNotEmpty($html);
+        $this->assertEquals('blob blob blob', $html);
     }
 
     /**

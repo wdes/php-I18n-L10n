@@ -23,29 +23,38 @@ class MoReader extends BasePlugin
     public const ENDIAN_LITTLE = 2;
 
     /**
-     * Data from mo file
+     * Translations
      *
-     * @var stdClass
+     * @var array<string,string>
      */
-    private $data;
-
-    /**
-     * File resource
-     *
-     * @var resource
-     */
-    private $fileRes;
+    protected $translations = [];
 
     /**
      * Build a MoReader instance
      *
      * @param array $options The options
      */
-    public function __construct(array $options)
+    public function __construct(array $options = [])
     {
-        if (is_dir($options['localeDir']) == false) {
-            throw new Exception('The directory does not exist : ' . $options['localeDir']);
-        }
+        $options = null;// Unused param detection
+    }
+
+    /**
+     * Set the translations
+     * @param array<string,string> $translations
+     */
+    public function setTranslations(array $translations): void
+    {
+        $this->translations = $translations;
+    }
+
+    /**
+     * Get the translations
+     * @return array<string,string> $translations
+     */
+    public function getTranslations(): array
+    {
+        return $this->translations;
     }
 
     /**
@@ -56,56 +65,57 @@ class MoReader extends BasePlugin
      */
     public function readFile(string $file): stdClass
     {
-        $this->data = new stdClass();
+        $data = new stdClass();
         if (! is_file($file)) {
             throw new Exception($file . ' does not exist.');
         }
         $res = fopen($file, 'rb');
         if (is_resource($res)) {
-            $this->fileRes = $res;
+            $fileRes = $res;
         } else {
             throw new Exception($file . ' could not be open.');
         }
-        $this->data->endian = self::determineByteOrder($this->fileRes);
-        if ($this->data->endian === -1) {
-            fclose($this->fileRes);
+        $data->endian = self::determineByteOrder($fileRes);
+        if ($data->endian === -1) {
+            fclose($fileRes);
             throw new Exception($file . ' is not a valid gettext file.');
         }
 
-        fseek($this->fileRes, 4);
-        $this->data->fileFormatRevision = self::readInteger($this->data->endian, $this->fileRes);
-        if ($this->data->fileFormatRevision !== 0 && $this->data->fileFormatRevision !== 1) {
-            fclose($this->fileRes);
+        fseek($fileRes, 4);
+        $data->fileFormatRevision = self::readInteger($data->endian, $fileRes);
+        if ($data->fileFormatRevision !== 0 && $data->fileFormatRevision !== 1) {
+            fclose($fileRes);
             throw new Exception($file . ' has an unknown major revision.');
         }
-        $this->data->nbrOfStrings           = self::readInteger($this->data->endian, $this->fileRes);
-        $this->data->tableOffsetOriginal    = self::readInteger($this->data->endian, $this->fileRes);//offset of table with original strings
-        $this->data->tableOffsetTranslation = self::readInteger($this->data->endian, $this->fileRes);//offset of table with translation strings
+        $data->nbrOfStrings           = self::readInteger($data->endian, $fileRes);
+        $data->tableOffsetOriginal    = self::readInteger($data->endian, $fileRes);//offset of table with original strings
+        $data->tableOffsetTranslation = self::readInteger($data->endian, $fileRes);//offset of table with translation strings
 
         // see: https://gist.github.com/timwhitlock/8255619
         // Hash table needs to be implemented if not useless
-        //$this->data->tblHashSize            = self::readInteger($this->data->endian, $this->fileRes);//size of hashing table
-        //$this->data->hashTableOffsetStart   = self::readInteger($this->data->endian, $this->fileRes);//offset of hashing table
-        //$this->data->hashTableOffsetEnd     = $this->data->hashTableOffsetStart + $this->data->tblHashSize * 4;//offset of hashing table
+        //$data->tblHashSize            = self::readInteger($data->endian, $fileRes);//size of hashing table
+        //$data->hashTableOffsetStart   = self::readInteger($data->endian, $fileRes);//offset of hashing table
+        //$data->hashTableOffsetEnd     = $data->hashTableOffsetStart + $data->tblHashSize * 4;//offset of hashing table
 
-        fseek($this->fileRes, $this->data->tableOffsetOriginal);
-        $this->data->msgIdTable = self::readIntegerList($this->data->endian, $this->fileRes, 2 * $this->data->nbrOfStrings);
-        fseek($this->fileRes, $this->data->tableOffsetTranslation);
-        $this->data->msgStrTable = self::readIntegerList($this->data->endian, $this->fileRes, 2 * $this->data->nbrOfStrings);
+        fseek($fileRes, $data->tableOffsetOriginal);
+        $data->msgIdTable = self::readIntegerList($data->endian, $fileRes, 2 * $data->nbrOfStrings);
+        fseek($fileRes, $data->tableOffsetTranslation);
+        $data->msgStrTable = self::readIntegerList($data->endian, $fileRes, 2 * $data->nbrOfStrings);
 
-        $this->data->translations = $this->readTranslations();
+        $this->translations = $this->readTranslations($fileRes, $data);
+        $data->translations = $this->translations;
 
         // Clean memory
-        unset($this->data->tableOffsetOriginal);
-        unset($this->data->tableOffsetTranslation);
-        unset($this->data->fileFormatRevision);
-        unset($this->data->endian);
-        unset($this->data->msgIdTable);
-        unset($this->data->msgStrTable);
+        unset($data->tableOffsetOriginal);
+        unset($data->tableOffsetTranslation);
+        unset($data->fileFormatRevision);
+        unset($data->endian);
+        unset($data->msgIdTable);
+        unset($data->msgStrTable);
 
         // Close resource
-        fclose($this->fileRes);
-        return $this->data;
+        fclose($fileRes);
+        return $data;
     }
 
     /**
@@ -113,27 +123,30 @@ class MoReader extends BasePlugin
      *
      * @copyright 2015 Max Grigorian
      * @license MIT
-     * @return array
+     *
+     * @param resource $fileRes The mo file
+     * @param stdClass $data The data
+     * @return array<string,string>
      */
-    public function readTranslations(): array
+    public function readTranslations($fileRes, stdClass $data): array
     {
-        $data = [];
-        for ($counter = 0; $counter < $this->data->nbrOfStrings; $counter++) {
+        $dataOut = [];
+        for ($counter = 0; $counter < $data->nbrOfStrings; $counter++) {
             $msgId  = null;
             $msgStr = null;
             try {
-                $msgId = $this->readStringFromTable($counter, $this->data->msgIdTable);
+                $msgId = $this->readStringFromTable($fileRes, $counter, $data->msgIdTable);
             } catch (Exception $e) {
                 $msgId = [''];
             }
             try {
-                $msgStr = $this->readStringFromTable($counter, $this->data->msgStrTable);
+                $msgStr = $this->readStringFromTable($fileRes, $counter, $data->msgStrTable);
             } catch (Exception $e) {
                 $msgStr = [];
             }
-            $this->processRecord($data, $msgId, $msgStr);
+            $this->processRecord($dataOut, $msgId, $msgStr);
         }
-        return $data;
+        return $dataOut;
     }
 
     /**
@@ -159,19 +172,21 @@ class MoReader extends BasePlugin
      *
      * @copyright 2015 Max Grigorian
      * @license MIT
+     *
+     * @param resource $fileRes The mo file
      * @param int   $index Position
      * @param array $table Table
      *
      * @return array
      */
-    public function readStringFromTable(int $index, array $table): array
+    public function readStringFromTable($fileRes, int $index, array $table): array
     {
         $sizeKey = ($index * 2 ) + 1;
         $size    = $table[$sizeKey];
         if ($size > 0) {
             $offset = $table[$sizeKey + 1];
-            fseek($this->fileRes, $offset);
-            $read = fread($this->fileRes, $size);
+            fseek($fileRes, $offset);
+            $read = fread($fileRes, $size);
             if (is_string($read)) {
                 return explode("\0", $read);
             } else {
@@ -266,8 +281,8 @@ class MoReader extends BasePlugin
      */
     public function idOrFind(string $msgId): string
     {
-        if (array_key_exists($msgId, $this->data->translations)) {
-            return $this->data->translations[$msgId];
+        if (array_key_exists($msgId, $this->translations)) {
+            return $this->translations[$msgId];
         } else {
             return $msgId;
         }

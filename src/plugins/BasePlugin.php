@@ -20,7 +20,7 @@ abstract class BasePlugin
      *
      * @param array $options The options for the plugin
      */
-    abstract public function __construct(array $options);
+    abstract public function __construct(array $options = []);
 
     /**
      * Get translation for a message id
