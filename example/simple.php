@@ -13,9 +13,7 @@ use Twig\Environment as TwigEnvironment;
 use Twig\Loader\FilesystemLoader as TwigLoaderFilesystem;
 
 $dataDir  = __DIR__ . '/locale/';
-$moReader = new MoReader(
-    ['localeDir' => $dataDir]
-);
+$moReader = new MoReader();
 $moReader->readFile($dataDir . 'fr.mo'); // Load the file you want (a specific language for example)
 // Load the translation plugin
 Launcher::setPlugin($moReader);
