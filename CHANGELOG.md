@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.0.0] - 2021-03-31
+
+- Change `BasePlugin::__construct` signature to `__construct(array $options = [])` (make `$options` optional)
+- Add `getTranslations` and `setTranslations` to `MoReader` class
+- Add a new even simpler example using `setTranslations`
+- Remove options array sent to `MoReader`, it was useless
+
 ## [v3.0.0] - 2021-03-24
 
 - Use `phpmyadmin/twig-i18n-extension` for Twig translation tag and pipe support
