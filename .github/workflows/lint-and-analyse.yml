@@ -15,10 +15,9 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "7.4"
-                  tools: composer:v2
+                  php-version: "7.2"
             - name: Install dependencies
-              run: composer install --no-interaction --prefer-dist --no-progress --no-suggest
+              run: composer install --no-interaction
             - name: Lint files
               run: composer run phpcs
 
@@ -34,9 +33,8 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "7.4"
-                  tools: composer:v2
+                  php-version: "7.2"
             - name: Install dependencies
-              run: composer install --no-interaction --prefer-dist --no-progress --no-suggest
-            - name: Lint files
+              run: composer install --no-interaction
+            - name: Analyse files
               run: composer run phpstan
