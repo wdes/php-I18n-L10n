@@ -53,5 +53,10 @@
         "phpunit/phpunit": "^7 || ^8 || ^9",
         "phpstan/phpstan": "^0.12",
         "wdes/coding-standard": "^3"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
