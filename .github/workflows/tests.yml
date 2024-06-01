@@ -1,5 +1,8 @@
 name: Run tests
 
+permissions:
+  contents: read
+
 on: [push]
 
 jobs:
@@ -9,21 +12,21 @@ jobs:
         continue-on-error: ${{ matrix.experimental }}
         strategy:
             matrix:
-                php-version: ["8.1", "8.2"]
+                php-version: ["8.1", "8.2", "8.3"]
                 os: [ubuntu-latest]
                 experimental: [false]
                 composer-options: ['']
                 include:
                     - { php-version: 'nightly', composer-options: '--ignore-platform-req=php', experimental: true, os: ubuntu-latest }
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Use php ${{ matrix.php-version }}
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-version }}
                   coverage: pcov
             - name: Cache module
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: ~/.composer/cache/
                   key: composer-cache
@@ -32,4 +35,6 @@ jobs:
             - name: Run php tests
               run: composer run phpunit
             - name: Send coverage
-              uses: codecov/codecov-action@v3
+              uses: codecov/codecov-action@v4
+              with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
