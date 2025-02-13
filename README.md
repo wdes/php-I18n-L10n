@@ -3,11 +3,10 @@
 PHP library/api to provide Internationalisation and Localisation
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/2c22d6f405d143d8b65d0e1d875dd701)](https://www.codacy.com/gh/wdes/php-I18n-L10n/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wdes/php-I18n-L10n&amp;utm_campaign=Badge_Grade)
-![Lint and analyse files](https://github.com/wdes/php-I18n-L10n/workflows/Lint%20and%20analyse%20files/badge.svg?branch=main)
-![Run phpunit tests](https://github.com/wdes/php-I18n-L10n/workflows/Run%20phpunit%20tests/badge.svg?branch=main)
-[![codecov](https://codecov.io/gh/wdes/php-I18n-L10n/branch/main/graph/badge.svg)](https://codecov.io/gh/wdes/php-I18n-L10n)
+[![Lint and analyse files](https://github.com/wdes/php-I18n-L10n/actions/workflows/lint-and-analyse.yml/badge.svg)](https://github.com/wdes/php-I18n-L10n/actions/workflows/lint-and-analyse.yml)
+[![Run tests](https://github.com/wdes/php-I18n-L10n/actions/workflows/tests.yml/badge.svg)](https://github.com/wdes/php-I18n-L10n/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/github/wdes/php-I18n-L10n/graph/badge.svg?token=ICxB69gGFc)](https://codecov.io/github/wdes/php-I18n-L10n)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwdes%2Fphp-I18n-L10n.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwdes%2Fphp-I18n-L10n?ref=badge_shield)
-[![HitCount](https://hits.dwyl.com/wdes/php-I18n-L10n.svg?style=flat)](https://hits.dwyl.com/wdes/php-I18n-L10n)
 ![Packagist](https://img.shields.io/packagist/l/wdes/php-I18n-L10n.svg)
 [![Latest Stable Version](https://poser.pugx.org/wdes/php-I18n-L10n/v/stable)](https://packagist.org/packages/wdes/php-I18n-L10n)
 
