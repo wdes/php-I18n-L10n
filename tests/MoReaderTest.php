@@ -27,24 +27,20 @@ class MoReaderTest extends TestCase
     /**
      * test Instance
      *
-     * @return MoReader
      */
-    public function testInstance(): MoReader
+    public function testInstance(): void
     {
         $moReader = new MoReader();
         $this->assertInstanceOf(MoReader::class, $moReader);
-
-        return $moReader;
     }
 
     /**
      * test read file
      * @depends testInstance
-     * @param MoReader $moReader Config instance
-     * @return void
      */
-    public function testReadFile(MoReader $moReader): void
+    public function testReadFile(): void
     {
+        $moReader = new MoReader();
         $data = $moReader->readFile(self::$dir . 'account-manager-en.mo');
         $this->assertInstanceOf(stdClass::class, $data);
         //echo \json_encode($data, JSON_PRETTY_PRINT);
@@ -62,11 +58,10 @@ class MoReaderTest extends TestCase
     /**
      * test read invalid file
      * @depends testInstance
-     * @param MoReader $moReader Config instance
-     * @return void
      */
-    public function testReadInvalidFile(MoReader $moReader): void
+    public function testReadInvalidFile(): void
     {
+        $moReader = new MoReader();
         $fileName = self::$dir . 'account-manager-ru.mo';
         $this->expectException(Exception::class);
         $this->expectExceptionMessage($fileName . ' does not exist.');
@@ -77,11 +72,10 @@ class MoReaderTest extends TestCase
     /**
      * test translate
      * @depends testInstance
-     * @param MoReader $moReader Config instance
-     * @return void
      */
-    public function testTranslate(MoReader $moReader): void
+    public function testTranslate(): void
     {
+        $moReader = new MoReader();
         $data = $moReader->readFile(self::$dir . 'abc.mo');
         $this->assertInstanceOf(stdClass::class, $data);
         $this->assertSame('Traduis ça', $moReader->__('Translate this'));
