@@ -1,0 +1,145 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Wdes\\phpI18nL10n\\Twig\\Extension\\I18n\:\:getFilters\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Twig/Extension/I18n.php
+
+		-
+			message: '#^Method Wdes\\phpI18nL10n\\Twig\\Extension\\I18n\:\:getTokenParsers\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Twig/Extension/I18n.php
+
+		-
+			message: '#^Parameter \#1 \$body of class Wdes\\phpI18nL10n\\Twig\\TranslationNode constructor expects Twig\\Node\\Node, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Twig/TokenParser.php
+
+		-
+			message: '#^Parameter \#2 \$plural of class Wdes\\phpI18nL10n\\Twig\\TranslationNode constructor expects Twig\\Node\\Node\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Twig/TokenParser.php
+
+		-
+			message: '#^Parameter \#3 \$count of class Wdes\\phpI18nL10n\\Twig\\TranslationNode constructor expects Twig\\Node\\Expression\\AbstractExpression\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Twig/TokenParser.php
+
+		-
+			message: '#^Parameter \#4 \$context of class Wdes\\phpI18nL10n\\Twig\\TranslationNode constructor expects Twig\\Node\\Node\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Twig/TokenParser.php
+
+		-
+			message: '#^Parameter \#5 \$notes of class Wdes\\phpI18nL10n\\Twig\\TranslationNode constructor expects Twig\\Node\\Node\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Twig/TokenParser.php
+
+		-
+			message: '#^Parameter \#6 \$domain of class Wdes\\phpI18nL10n\\Twig\\TranslationNode constructor expects Twig\\Node\\Node\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Twig/TokenParser.php
+
+		-
+			message: '#^Parameter \#7 \$lineno of class Wdes\\phpI18nL10n\\Twig\\TranslationNode constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Twig/TokenParser.php
+
+		-
+			message: '#^Parameter \#8 \$tag of class Wdes\\phpI18nL10n\\Twig\\TranslationNode constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Twig/TokenParser.php
+
+		-
+			message: '#^Method Wdes\\phpI18nL10n\\plugins\\BasePlugin\:\:__construct\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/plugins/BasePlugin.php
+
+		-
+			message: '#^Method Wdes\\phpI18nL10n\\plugins\\MoReader\:\:__construct\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/plugins/MoReader.php
+
+		-
+			message: '#^Method Wdes\\phpI18nL10n\\plugins\\MoReader\:\:processRecord\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/plugins/MoReader.php
+
+		-
+			message: '#^Method Wdes\\phpI18nL10n\\plugins\\MoReader\:\:processRecord\(\) has parameter \$msgIds with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/plugins/MoReader.php
+
+		-
+			message: '#^Method Wdes\\phpI18nL10n\\plugins\\MoReader\:\:processRecord\(\) has parameter \$msgStrs with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/plugins/MoReader.php
+
+		-
+			message: '#^Method Wdes\\phpI18nL10n\\plugins\\MoReader\:\:readInteger\(\) should return int but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/plugins/MoReader.php
+
+		-
+			message: '#^Method Wdes\\phpI18nL10n\\plugins\\MoReader\:\:readIntegerList\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/plugins/MoReader.php
+
+		-
+			message: '#^Method Wdes\\phpI18nL10n\\plugins\\MoReader\:\:readStringFromTable\(\) has parameter \$table with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/plugins/MoReader.php
+
+		-
+			message: '#^Method Wdes\\phpI18nL10n\\plugins\\MoReader\:\:readStringFromTable\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/plugins/MoReader.php
+
+		-
+			message: '#^Method Wdes\\phpI18nL10n\\plugins\\MoReader\:\:readTranslations\(\) should return array\<string, string\> but returns array\.$#'
+			identifier: return.type
+			count: 1
+			path: src/plugins/MoReader.php
+
+		-
+			message: '#^Parameter \#2 \$length of function fread expects int\<1, max\>, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/plugins/MoReader.php
+
+		-
+			message: '#^Parameter \#2 \$length of function fread expects int\<1, max\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/plugins/MoReader.php
+
+		-
+			message: '#^Parameter \#2 \$offset of function fseek expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/plugins/MoReader.php
+
+		-
+			message: '#^Parameter \#3 \$table of method Wdes\\phpI18nL10n\\plugins\\MoReader\:\:readStringFromTable\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/plugins/MoReader.php
