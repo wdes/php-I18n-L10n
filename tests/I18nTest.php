@@ -62,7 +62,7 @@ class I18nTest extends TestCase
             $loader,
             [
                 'cache' => $this->memoryCache,
-                'debug' => true
+                'debug' => true,
             ]
         );
 

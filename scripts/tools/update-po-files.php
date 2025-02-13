@@ -44,8 +44,8 @@ $poTemplate  = $options['po-template'];
 $template    = file_get_contents($poTemplate);
 
 $mappings               = new stdClass();
-$mappings->mappings     = array();
-$mappings->replacements = array();
+$mappings->mappings     = [];
+$mappings->replacements = [];
 
 if (isset($options['json-mapping'])) {
     $mappings = json_decode(file_get_contents($options['json-mapping']));

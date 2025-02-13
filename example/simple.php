@@ -26,6 +26,6 @@ echo $twig->render(
     'homepage.twig', // Can be found in the templates directory
     [
         'keyForTwig' => 'theValue', // Just an example line ;)
-        'say' => 'Hello world'
+        'say' => 'Hello world',
     ]
 );
