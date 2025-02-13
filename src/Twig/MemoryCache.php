@@ -91,7 +91,7 @@ class MemoryCache implements CacheInterface
         $content = self::getFromCache($template);
         // "/function ([a-z_]+)\("
         preg_match_all(
-            '/protected function doDisplay\(([a-z\s,\$=\[\]]+)\)([\s]+){([=%\sa-z\/0-9-\>:\(\)\\\";.,\$\[\]?_-]+)/msi',
+            '/protected function doDisplay\(([a-z\s,\$=\[\]]+)\)\: iterable([\s]+){([=%\sa-z\/0-9-\>:\(\)\\\";.,\$\[\]?_-]+)/msi',
             $content,
             $output_array
         );
