@@ -232,7 +232,7 @@ class I18nTest extends TestCase
             ' array("%nbr%" => ($context["nbr"] ?? null), ));',
             $generatedCode
         );
-        $html = $template->render(['nbr' => 5]);
+        $html = $template->render(['nbr' => 5, 'nbr_persons' => 0]);
         $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }
@@ -258,7 +258,7 @@ class I18nTest extends TestCase
             '// l10n: Number of users',
             $generatedCode
         );
-        $html = $template->render(['nbr' => 5]);
+        $html = $template->render(['nbr' => 5, 'nbr_persons' => 0]);
         $this->assertEquals('one user likes this.', $html);
         $this->assertNotEmpty($html);
     }
@@ -277,15 +277,13 @@ class I18nTest extends TestCase
             'yield \Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person", "persons", abs(        // line 1' . "\n" . '($context["a"] ?? null)));',
             $generatedCode
         );
-        $html = $template->render(['nbr' => 5]);
+        $html = $template->render(['nbr' => 5, 'a' => 0]);
         $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }
 
     /**
       * Test simple plural translation using count
-
-
       * @return void
       */
     public function testSimplePluralTranslationCount(): void
@@ -300,7 +298,7 @@ class I18nTest extends TestCase
             '($context["a"] ?? null), "count", [], "any", false, false, false, 1)));',
             $generatedCode
         );
-        $html = $template->render(['a' => ['1', '2']]);
+        $html = $template->render(['a' => [1, 2]]);
         $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }
@@ -323,7 +321,7 @@ class I18nTest extends TestCase
             ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1)), ));',
             $generatedCode
         );
-        $html = $template->render(['a' => ['1', '2'], 'nbrdogs' => 3]);
+        $html = $template->render(['a' => [1, 2], 'nbrdogs' => 3]);
         $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }

@@ -39,7 +39,6 @@ class I18nTestNoData extends TestCase
     /**
      * Set up the instance
      *
-     * @return void
      */
     public function setUp(): void
     {
@@ -56,7 +55,6 @@ class I18nTestNoData extends TestCase
 
     /**
      * Test simple translation using get and set
-     * @return void
      */
     public function testSimpleTranslationGetSetTranslations(): void
     {
@@ -90,7 +88,6 @@ class I18nTestNoData extends TestCase
 
     /**
      * Test simple translation
-     * @return void
      */
     public function testSimpleTranslation(): void
     {
@@ -104,7 +101,6 @@ class I18nTestNoData extends TestCase
 
     /**
      * Test simple translation with a comment
-     * @return void
      */
     public function testSimpleTranslationWithComment(): void
     {
@@ -118,7 +114,6 @@ class I18nTestNoData extends TestCase
 
     /**
      * Test simple translation with context
-     * @return void
      */
     public function testSimpleTranslationWithContext(): void
     {
@@ -132,7 +127,6 @@ class I18nTestNoData extends TestCase
 
     /**
      * Test simple translation with context and a variable
-     * @return void
      */
     public function testSimpleTranslationWithContextAndVariable(): void
     {
@@ -150,7 +144,6 @@ class I18nTestNoData extends TestCase
 
     /**
      * Test simple translation with context and some variables
-     * @return void
      */
     public function testSimpleTranslationWithContextAndVariables(): void
     {
@@ -169,43 +162,40 @@ class I18nTestNoData extends TestCase
 
     /**
      * Test plural translation
-     * @return void
      */
     public function testPluralTranslation(): void
     {
         $template = $this->twig->createTemplate(
             '{% trans %}One person{% plural nbr_persons %}{{ nbr }} persons{% endtrans %}'
         );
-        $html     = $template->render(['nbr' => 5]);
+        $html     = $template->render(['nbr' => 5, 'nbr_persons' => 0]);
         $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }
 
     /**
      * Test plural translation with comment
-     * @return void
      */
     public function testPluralTranslationWithComment(): void
     {
         $template = $this->twig->createTemplate(
             '{% trans %}one user likes this.{% plural nbr_persons %}{{ nbr }} users likes this.{% notes %}Number of users{% endtrans %}'
         );
-        $html     = $template->render(['nbr' => 5]);
+        $html     = $template->render(['nbr' => 5, 'nbr_persons' => 0]);
         $this->assertEquals('one user likes this.', $html);
         $this->assertNotEmpty($html);
     }
 
     /**
      * Test simple plural translation
-     * @return void
      */
     public function testSimplePluralTranslation(): void
     {
         $template = $this->twig->createTemplate(
-            '{% trans %}One person{% plural a %}persons{% endtrans %}'
+            '{% trans %}One person{% plural nbr %}persons{% endtrans %}'
         );
         $html     = $template->render(['nbr' => 5]);
-        $this->assertEquals('One person', $html);
+        $this->assertEquals('persons', $html);
         $this->assertNotEmpty($html);
     }
 
@@ -220,28 +210,26 @@ class I18nTestNoData extends TestCase
         $template = $this->twig->createTemplate(
             '{% trans %}One person{% plural a.count %}persons{% endtrans %}'
         );
-        $html     = $template->render(['a' => ['1', '2']]);
+        $html     = $template->render(['a' => [1, 2]]);
         $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }
 
     /**
      * Test simple plural translation using count and vars
-     * @return void
      */
     public function testSimplePluralTranslationCountAndVars(): void
     {
         $template = $this->twig->createTemplate(
-            '{% trans %}One person{% plural a.count %}persons and {{ count }} dogs{% endtrans %}'
+            '{% trans %}One person{% plural a.count %}persons and {{ nbrdogs }} dogs{% endtrans %}'
         );
-        $html     = $template->render(['a' => ['1', '2'], 'nbrdogs' => 3]);
+        $html     = $template->render(['a' => [1, 2], 'nbrdogs' => 3]);
         $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }
 
     /**
      * Test simple plural translation using count and vars
-     * @return void
      */
     public function testExtensionI18nGetName(): void
     {
