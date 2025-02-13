@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Drop PHP 7.2, 7.3, 7.4, 8.0
+- Remove test files from the vendor tarball
+- Drop phpunit support < 10
+- Support phpunit 10, 11, 12
+- Require Twig 3.20
+
 ## [v4.0.0] - 2021-03-31
 
 - Change `BasePlugin::__construct` signature to `__construct(array $options = [])` (make `$options` optional)
