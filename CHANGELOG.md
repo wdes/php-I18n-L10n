@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.1.0] - 2025-02-14
+
 - Drop PHP 7.2, 7.3, 7.4, 8.0
 - Remove test files from the vendor tarball
 - Drop phpunit support < 10
