@@ -201,16 +201,28 @@ class I18nTestNoData extends TestCase
 
     /**
       * Test simple plural translation using count
-
-
       * @return void
       */
     public function testSimplePluralTranslationCount(): void
     {
         $template = $this->twig->createTemplate(
-            '{% trans %}One person{% plural a.count %}persons{% endtrans %}'
+            '{% trans %}One person{% plural a|length %}persons{% endtrans %}'
         );
         $html     = $template->render(['a' => [1, 2]]);
+        $this->assertEquals('persons', $html);
+        $this->assertNotEmpty($html);
+    }
+
+    /**
+      * Test simple plural translation using count
+      * @return void
+      */
+    public function testSimplePluralTranslationCountOne(): void
+    {
+        $template = $this->twig->createTemplate(
+            '{% trans %}One person{% plural a|length %}persons{% endtrans %}'
+        );
+        $html     = $template->render(['a' => [1]]);
         $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }
@@ -221,9 +233,22 @@ class I18nTestNoData extends TestCase
     public function testSimplePluralTranslationCountAndVars(): void
     {
         $template = $this->twig->createTemplate(
-            '{% trans %}One person{% plural a.count %}persons and {{ nbrdogs }} dogs{% endtrans %}'
+            '{% trans %}One person{% plural a|length %}persons and {{ nbrdogs }} dogs ({{ count }}){% endtrans %}'
         );
         $html     = $template->render(['a' => [1, 2], 'nbrdogs' => 3]);
+        $this->assertEquals('persons and 3 dogs (2)', $html);
+        $this->assertNotEmpty($html);
+    }
+
+    /**
+     * Test simple plural translation using count and vars
+     */
+    public function testSimplePluralTranslationCountAndVarsOne(): void
+    {
+        $template = $this->twig->createTemplate(
+            '{% trans %}One person{% plural a|length %}persons and {{ nbrdogs }} dogs ({{ count }}){% endtrans %}'
+        );
+        $html     = $template->render(['a' => [1], 'nbrdogs' => 3]);
         $this->assertEquals('One person', $html);
         $this->assertNotEmpty($html);
     }

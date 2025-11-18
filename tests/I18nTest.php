@@ -289,17 +289,17 @@ class I18nTest extends TestCase
     public function testSimplePluralTranslationCount(): void
     {
         $template      = $this->twig->createTemplate(
-            '{% trans %}One person{% plural a.count %}persons{% endtrans %}'
+            '{% trans %}One person{% plural a|length %}persons{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
             'yield \Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person",' .
-            ' "persons", abs(CoreExtension::getAttribute($this->env, $this->source,         // line 1' . "\n" .
-            '($context["a"] ?? null), "count", [], "any", false, false, false, 1)));',
+            ' "persons", abs(Twig\Extension\CoreExtension::length($this->env->getCharset(),         // line 1' . "\n" .
+            '($context["a"] ?? null))));',
             $generatedCode
         );
         $html = $template->render(['a' => [1, 2]]);
-        $this->assertEquals('One person', $html);
+        $this->assertEquals('persons', $html);
         $this->assertNotEmpty($html);
     }
 
@@ -310,19 +310,18 @@ class I18nTest extends TestCase
     public function testSimplePluralTranslationCountAndVars(): void
     {
         $template      = $this->twig->createTemplate(
-            '{% trans %}One person{% plural a.count %}persons and {{ count }} dogs{% endtrans %}'
+            '{% trans %}One person{% plural a|length %}persons and {{ count }} dogs{% endtrans %}'
         );
         $generatedCode = $this->memoryCache->extractDoDisplayFromCache($template);
         $this->assertStringContainsString(
             'yield strtr(\Wdes\phpI18nL10n\Launcher::getPlugin()->ngettext("One person",' .
-            ' "persons and %count% dogs", abs(CoreExtension::getAttribute($this->env,' .
-            ' $this->source,         // line 1' . "\n" . '($context["a"] ?? null), "count", [], "any", false, false, false, 1))),' .
-            ' array("%count%" => abs(CoreExtension::getAttribute($this->env,' .
-            ' $this->source, ($context["a"] ?? null), "count", [], "any", false, false, false, 1)), ));',
+            ' "persons and %count% dogs", abs(Twig\Extension\CoreExtension::length($this->env->getCharset(),         // line 1' . "\n" .
+            '($context["a"] ?? null)))),' .
+            ' array("%count%" => abs(Twig\Extension\CoreExtension::length($this->env->getCharset(), ($context["a"] ?? null))), ));',
             $generatedCode
         );
         $html = $template->render(['a' => [1, 2], 'nbrdogs' => 3]);
-        $this->assertEquals('One person', $html);
+        $this->assertEquals('persons and 2 dogs', $html);
         $this->assertNotEmpty($html);
     }
 
