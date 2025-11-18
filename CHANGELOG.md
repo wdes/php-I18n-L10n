@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.2.0] - 2025-11-18
+
+- Test PHP 8.5 and improve tests
+- Require Twig `^3.22` and `phpmyadmin/twig-i18n-extension` `^4.1.5`
+
 ## [v4.1.0] - 2025-02-14
 
 - Drop PHP 7.2, 7.3, 7.4, 8.0
